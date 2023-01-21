@@ -1,7 +1,5 @@
 # Lector-de-noticias-RSS
 
-# ProyectoFinalDAW
-
 ### Autores 💻✨
 
 - 🍃 **Fernan Enrique Cetina Escalante** - [Fernan](https://github.com/FernanCetinaE)
