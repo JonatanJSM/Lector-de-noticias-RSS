@@ -26,7 +26,7 @@ export default function _proveedores(){
                     <form onSubmit={handleSubmit(onSubmit)} className='form-group' style={{margin:'auto'}}>
                         <div className="mb-3">
                             <label htmlFor="urls" className="form-label">URLs</label>
-                            <input type="text" className="form-control" id="urls" {...register("urls", { required: true })} />
+                            <input type="text" className="form-control" id="urls" {...register("urls", { required: true })} autoComplete='off'/>
                             {errors.urls && <span className="text-danger">This field is required</span>}
                             </div>
 
