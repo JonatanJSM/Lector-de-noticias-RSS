@@ -23,8 +23,8 @@ async function callAPI() {
     const res = await fetch(
       `https://api.thecatapi.com/v1/images/search`
     ).then((response) => response.json());
-      //const data = await res.json();
-      //console.log(data[0].url);
+      const data = await res.json();
+      console.log(data[0].url);
   } catch (err) {
     console.log(err);
   }
@@ -58,7 +58,8 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
 });
   
   async function parserRRSFeed() {
-     const miarray: cardProps[] = [];
+    let photoCat : string = "";
+    const miarray: cardProps[] = [];
     const feed = await parser.parseURL('https://rss.nytimes.com/services/xml/rss/nyt/World.xml');
     // console.log(feed.image['url']); // feed will have a `foo` property, type as a string
     //console.log(feed.image.url);
@@ -69,6 +70,18 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
     var x: string ="";
     promise.then(console.log);
     console.log("el valor de x"+x);
+
+    //fetch get from https://api.thecatapi.com/v1/images/search    
+    await fetch('https://api.thecatapi.com/v1/images/search',
+    {
+    method: 'GET',
+    headers: {'Content-Type': 'application/json'}
+    })
+    .then(response => response.json())
+    .then(data => {
+      console.log(data[0].url);
+      photoCat = data[0].url;
+    });
     
     let i = 0;
     feed.items.forEach(item => {
@@ -76,12 +89,11 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
       let description: string;
       let link: string;
       let summary: string;
-      let photoCat : string;
 
+      console.log('photoCat: '+photoCat);
+      
       tittle = String(item.title);
       link = String(item.link);
-
-      photoCat ="";
 
       if(item.description === undefined){
         description = item.summary;

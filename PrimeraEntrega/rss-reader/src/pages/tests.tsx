@@ -18,7 +18,7 @@ export default function Home() {
           </h1>
           <button onClick={asyncCall}>
             Activate Lasers
-        </button>
+          </button>
         </div>
       </main>
     </>
