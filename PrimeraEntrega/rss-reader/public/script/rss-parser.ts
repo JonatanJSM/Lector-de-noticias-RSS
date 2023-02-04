@@ -1,5 +1,6 @@
 import Parser from "rss-parser";
 import {NewsCardProps} from "../interface/NewsCardProps"
+const sanitizeHtml = require('sanitize-html');
 
 class cardProps implements NewsCardProps {
     title: string;
@@ -17,6 +18,8 @@ class cardProps implements NewsCardProps {
   }
 }
 
+var arrayNews: string="";
+
 type CustomFeed = {foo: string};
 type CustomItem = {
     description: string;
@@ -33,14 +36,11 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
 async function parserRRSFeed() {
     let photoCat : string = "";
     const miarray: cardProps[] = [];
-    const feed = await parser.parseURL('https://rss.nytimes.com/services/xml/rss/nyt/World.xml');
-    // console.log(feed.image['url']); // feed will have a `foo` property, type as a string
+    const feed = await parser.parseURL('https://timesofindia.indiatimes.com/rssfeeds/296589292.cms');
+    // console.log(feed.image['url']); 
     //console.log(feed.image.url);
-    //parseString(
     //console.log(feed.items);
-
-
-    //fetch get from https://api.thecatapi.com/v1/images/search    
+  
     await fetch('https://api.thecatapi.com/v1/images/search',
       {
          method: 'GET',
@@ -58,27 +58,45 @@ async function parserRRSFeed() {
       let link: string;
       let summary: string;
 
-      console.log('photoCat: '+photoCat);
-      
       tittle = String(item.title);
       link = String(item.link);
+      
 
       if(item.description === undefined){
-        description = item.summary;
-        summary = "this is the summary";
+        description = sanitizeHtml(item.summary);
+        summary = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec molestie ultrices dolor vel accumsan. Donec et libero sed arcu ornare feugiat eu pharetra nunc. Donec fermentum neque at ipsum maximus, et ullamcorper odio pellentesque.";
+        if(description === ""){
+          description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec molestie ultrices dolor vel accumsan.";
+        }
       }else{
-        description = item.description;
-        summary = "this is the summary2";
+        description = sanitizeHtml(item.description);
+        if(description === ""){
+          description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec molestie ultrices dolor vel accumsan.";
+        }
+        summary = "Proin egestas efficitur nisl, sit amet cursus augue sollicitudin nec. Phasellus euismod nec tellus lobortis feugiat. Cras hendrerit vel tortor ac cursus. Morbi tortor mauris, aliquam eget mauris viverra, porta varius leo.";
       }
-        miarray[i]=(new cardProps(tittle, description, link, summary,"aux"));
+        miarray[i]=(new cardProps(tittle, description, link, summary,photoCat));
         i++;
     });
+
     console.log(miarray);
+    var arrayJSON = JSON.stringify(miarray);
+    return arrayJSON;
   }
 
   function getDataFeed(){
-    parserRRSFeed();
-    console.log("RSS is");
+    parserRRSFeed()
+      .then(jsonnn =>{
+        arrayNews = jsonnn
+      });
+  } 
 
-  } export default getDataFeed;
+  //Es para probar la función intermediaria
+  function callGetDataFeed(){
+    getDataFeed();
+    setTimeout(() => {
+      console.log("Hello "+arrayNews)
+  }, 1000)
+    
+  }export default callGetDataFeed;
 
