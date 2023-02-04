@@ -17,33 +17,6 @@ class cardProps implements NewsCardProps {
   }
 }
 
-//Este es una opción
-async function callAPI() {
-  try {
-    const res = await fetch(
-      `https://api.thecatapi.com/v1/images/search`
-    ).then((response) => response.json());
-      const data = await res.json();
-      console.log(data[0].url);
-  } catch (err) {
-    console.log(err);
-  }
-};
-
-//La segunda opción
-function load (url:string) {
-  return new Promise(async function (resolve, reject) {
-    // do async thing
-    const res = await fetch(url)
-
-    // your custom code
-    console.log('Yay! Loaded:', url)
-    res.json();
-    // resolve
-    resolve(res) // see note below!
-  })
-}
-
 type CustomFeed = {foo: string};
 type CustomItem = {
     description: string;
@@ -57,7 +30,7 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
     }
 });
   
-  async function parserRRSFeed() {
+async function parserRRSFeed() {
     let photoCat : string = "";
     const miarray: cardProps[] = [];
     const feed = await parser.parseURL('https://rss.nytimes.com/services/xml/rss/nyt/World.xml');
@@ -66,21 +39,16 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
     //parseString(
     //console.log(feed.items);
 
-    const promise = load('https://api.thecatapi.com/v1/images/search')
-    var x: string ="";
-    promise.then(console.log);
-    console.log("el valor de x"+x);
 
     //fetch get from https://api.thecatapi.com/v1/images/search    
     await fetch('https://api.thecatapi.com/v1/images/search',
-    {
-    method: 'GET',
-    headers: {'Content-Type': 'application/json'}
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log(data[0].url);
-      photoCat = data[0].url;
+      {
+         method: 'GET',
+         headers: {'Content-Type': 'application/json'}
+      })
+      .then(response => response.json())
+      .then(data => {
+        photoCat = data[0].url;
     });
     
     let i = 0;
@@ -108,9 +76,9 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
     console.log(miarray);
   }
 
-  export default parserRRSFeed;
+  function getDataFeed(){
+    parserRRSFeed();
+    console.log("RSS is");
 
-////https://learn.microsoft.com/es-es/azure/static-web-apps/deploy-nextjs-static-export?tabs=github-actions
-// PrimeraEntrega\rss-reader
+  } export default getDataFeed;
 
-////https://stackoverflow.com/questions/46522749/how-to-solve-redirect-has-been-blocked-by-cors-policy-no-access-control-allow
