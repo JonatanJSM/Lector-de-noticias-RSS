@@ -1,6 +1,6 @@
 import Parser from "rss-parser";
 import {NewsCardProps} from "../interface/NewsCardProps"
-const sanitizeHtml = require('sanitize-html');
+import sanitizeHtml from 'sanitize-html';
 
 class cardProps implements NewsCardProps {
     title: string;
