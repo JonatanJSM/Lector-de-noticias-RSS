@@ -1,5 +1,6 @@
-//https://react-hook-form.com/get-started
+// https://react-hook-form.com/get-started
 // https://react-hook-form.com/api/usefieldarray
+// https://nextjs.org/docs/guides/building-forms
 import React from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
@@ -58,8 +59,15 @@ export default function _proveedores(){
 	// }
 
     const onSubmit = (data:any) => {
-        console.log(data.cart[0].urls)
+        console.log(data.cart[0].urls);
         console.log(JSON.stringify(data));
+        fetch('../api/CRUD/1', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
     };
 
     return(

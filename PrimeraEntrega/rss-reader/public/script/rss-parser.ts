@@ -33,10 +33,10 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
     }
 });
   
-async function parserRRSFeed() {
+async function parserRRSFeed(urlss: string) {
     let photoCat : string = "";
     const miarray: cardProps[] = [];
-    const feed = await parser.parseURL('https://timesofindia.indiatimes.com/rssfeeds/296589292.cms');
+    const feed = await parser.parseURL(urlss);
     // console.log(feed.image['url']); 
     //console.log(feed.image.url);
     //console.log(feed.items);
@@ -79,24 +79,24 @@ async function parserRRSFeed() {
         i++;
     });
 
-    console.log(miarray);
+    //console.log(miarray);
     var arrayJSON = JSON.stringify(miarray);
     return arrayJSON;
   }
 
-  function getDataFeed(){
-    parserRRSFeed()
+  function getDataFeed(urls:string){
+    parserRRSFeed(urls)
       .then(jsonnn =>{
         arrayNews = jsonnn
       });
   } 
 
   //Es para probar la función intermediaria
-  function callGetDataFeed(){
-    getDataFeed();
+  function callGetDataFeed(urls:string){
+    getDataFeed(urls);
     setTimeout(() => {
       console.log("Hello "+arrayNews)
-  }, 1000)
+  }, 2000)
     
   }export default callGetDataFeed;
 

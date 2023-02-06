@@ -16,7 +16,7 @@ export default function Home() {
             Landing Page!
             
           </h1>
-          <button onClick={asyncCall}>
+          <button >
             Activate Lasers
           </button>
         </div>
