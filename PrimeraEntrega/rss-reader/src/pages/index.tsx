@@ -47,7 +47,7 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <span style={{display:'flex'}}>
-          <img src="./rssIcon.png" alt="" width={'30px'} height={'30px'} />
+          <img src="./RssIcon.png" alt="" width={'30px'} height={'30px'} />
           <p style={{marginTop:'5px', fontFamily:'Roboto,Helvetica,Arial,sans-serif'}}>¡Entérate!</p>
         </span>
         <Box sx={{ width: '100%' }}>

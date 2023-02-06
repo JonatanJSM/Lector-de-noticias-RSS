@@ -57,7 +57,7 @@ export default function NewsCard(news: NewsCardProps) {
       <CardMedia
         component="img"
         height="194"
-        image="https://www.vidactual.com/rcpmaker/wp-content/uploads/2020/10/Paella.png"
+        image="https://cdn2.thecatapi.com/images/3mo.jpg"
         alt="Paella dish"
       />
       <CardContent>
