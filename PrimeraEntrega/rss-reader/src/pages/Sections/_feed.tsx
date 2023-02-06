@@ -9,7 +9,7 @@ export default function _feed(){
         link: "Link",
         pubDate: "Fecha",
         image: "Imagen",
-        url: "https://www.vidactual.com/rcpmaker/wp-content/uploads/2020/10/Paella.png"
+        url: "https://cdn2.thecatapi.com/images/3mo.jpg"
     }
     useEffect(()=>{
         
