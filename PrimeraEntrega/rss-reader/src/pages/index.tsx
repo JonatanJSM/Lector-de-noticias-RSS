@@ -22,13 +22,27 @@ export default function Home() {
   // const { data, error, isLoading } = useSWR<any>('/api/CRUD/'+`test`, fetcher);
   const [value, setValue] = React.useState(0);
   useEffect(()=>{
-    // fetch('/api/CRUD/1', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({name: 'test', CRUD: 'test'}),
-    // })
+    fetch('/api/userEP', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({name: 'test', age: 9, height: 130}),
+    }).then(status=> console.log(status))
+    .then(data=>console.log(data))
+
+    //fetch with method get to userEP
+    fetch('/api/userEP', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({name: 'test', age: 9, height: 130}),
+    }).then(async response=>{
+      const data = await response.json();
+      console.log(data);
+    })
+
 
   })
 
