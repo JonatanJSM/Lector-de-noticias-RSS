@@ -6,4 +6,5 @@ export interface NewsCardProps {
     pubDate?: string;
     source?: string;
     image?: string;
+    category?: string;
 }

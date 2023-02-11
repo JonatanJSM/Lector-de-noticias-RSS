@@ -1,20 +1,7 @@
-// https://react-hook-form.com/get-started
-// https://react-hook-form.com/api/usefieldarray
-// https://nextjs.org/docs/guides/building-forms
 import React from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 
 export default function _proveedores(){
-    // const {
-    //     register,
-    //     handleSubmit,
-    //     formState: { errors },
-    //     getValues,
-    //   } = useForm({
-    //     defaultValues: {
-    //         urls: ""
-    //     }
-    // });
 
     type FormValues = {
         cart: {
@@ -41,22 +28,6 @@ export default function _proveedores(){
             required: "Please append at least 1 item"
           }
     })
-
-    // const [inputsURL, setInputsURL] = React.useState([
-	// 	{
-	// 		id: uuidv4(),
-	// 	},
-	// ]);
-
-    // const addInputURL = () => {
-	// 	//Todo generate random id
-
-	// 	let _inputsURL = [...inputsURL]
-	// 	_inputsURL.push({
-	// 		id: uuidv4(),
-	// 	})
-	// 	setInputsURL(_inputsURL);
-	// }
 
     const onSubmit = (data:any) => {
         console.log(data.cart[0].urls);
@@ -94,10 +65,6 @@ export default function _proveedores(){
                                     </section>
                                 );
                                 })}
-                            {/* {inputsURL.map((urll) =>(
-                                <input type="text" className="form-control"  {...register("urls", { required: true })} autoComplete='off' key={urll.id}/>
-                            ))}
-                            {errors.urls && <span className="text-danger">This field is required</span>} */}
                                 {errors.cart?.at && <p className="text-danger">This field is required</p>}
                             </div>
                             <p>{errors.cart?.root?.message}</p>

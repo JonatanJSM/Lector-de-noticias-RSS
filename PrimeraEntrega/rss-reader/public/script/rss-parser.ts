@@ -6,17 +6,24 @@ class cardProps implements NewsCardProps {
     title: string;
     description: string;
     link: string;
-    summary: string;
+    category: string;
     image: string;
+    pubDate: string;
 
-  public constructor(title: string, desdescription: string, link: string, summary: string, image: string) {
+  public constructor(title: string, desdescription: string, link: string, category: string, image: string, pubDate: string) {
     this.title = title;
     this.description = desdescription;
     this.link = link;
-    this.summary = summary;
     this.image = image
+    this.category = category;
+    this.pubDate = pubDate;
   }
 }
+
+type NYT  = {
+  _: number;
+  '$': string;
+};
 
 var arrayNews: string="";
 
@@ -37,9 +44,10 @@ async function parserRRSFeed(urlss: string) {
     let photoCat : string = "";
     const miarray: cardProps[] = [];
     const feed = await parser.parseURL(urlss);
+    let feedTitle = feed.title;
     // console.log(feed.image['url']); 
     //console.log(feed.image.url);
-    //console.log(feed.items);
+    console.log("elll titulo es"+feed.title);
   
     await fetch('https://api.thecatapi.com/v1/images/search',
       {
@@ -48,7 +56,7 @@ async function parserRRSFeed(urlss: string) {
       })
       .then(response => response.json())
       .then(data => {
-        photoCat = data[0].url;
+      photoCat = data[0].url;
     });
     
     let i = 0;
@@ -57,10 +65,13 @@ async function parserRRSFeed(urlss: string) {
       let description: string;
       let link: string;
       let summary: string;
+      let date: string;
+      let category: string;
+      let categories: string[] =[];
 
       tittle = String(item.title);
       link = String(item.link);
-      
+      date = String(item.isoDate);
 
       if(item.description === undefined){
         description = sanitizeHtml(item.summary);
@@ -75,11 +86,23 @@ async function parserRRSFeed(urlss: string) {
         }
         summary = "Proin egestas efficitur nisl, sit amet cursus augue sollicitudin nec. Phasellus euismod nec tellus lobortis feugiat. Cras hendrerit vel tortor ac cursus. Morbi tortor mauris, aliquam eget mauris viverra, porta varius leo.";
       }
-        miarray[i]=(new cardProps(tittle, description, link, summary,photoCat));
+
+      categories  = Object.assign([], item.categories);
+      if("NYT > World News" === String(feedTitle)){
+        let x = categories[0];
+        var result = JSON.parse(JSON.stringify(x)) as NYT;
+        category = String(result._);
+      }else{
+        if(categories[0] === undefined){
+            category="News";
+        }else{
+          category = String(categories[0]);
+        }
+      }
+        miarray[i]=(new cardProps(tittle, description, link, category, photoCat, date));
         i++;
     });
 
-    //console.log(miarray);
     var arrayJSON = JSON.stringify(miarray);
     return arrayJSON;
   }
@@ -95,8 +118,8 @@ async function parserRRSFeed(urlss: string) {
   function callGetDataFeed(urls:string){
     getDataFeed(urls);
     setTimeout(() => {
-      console.log("Hello "+arrayNews)
-  }, 2000)
+      console.log(JSON.parse(arrayNews));
+  }, 3000)
     
   }export default callGetDataFeed;
 
