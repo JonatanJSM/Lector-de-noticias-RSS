@@ -1,36 +1,35 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 //@ts-ignore
 import clientPromise from 'lib/mongo/index';
-import { ObjectId } from 'mongodb';
 import parserRSS from 'public/script/rss-parser'
-import { News } from 'public/interface/NewsInfo';
+import { WebNews } from 'public/interface/WebNews';
 
-interface User {
-    _id?: string;
-    name?: string;
-    age?: number;
-    height?: number;
-}
+
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
-    let newss: News= {};
+    let newss: WebNews[]=[];
     try {
         //@ts-ignore
         const client = await clientPromise;
         const db = client.db(process.env.MONGO_DB);
         
-        if(req.method === 'GET'){}
+        if(req.method === 'GET'){
+            const newsDb = await db.collection("news").find({}).toArray();
+            newss = newsDb;
+             // res.json({ status: 200, data: usersDb });
+        }
 
         if(req.method === 'POST'){
-            let aux = JSON.stringify(req.body);
-            let json = JSON.parse(aux);
-            console.log(json.cart[0].urls);
-            //var x = parserRSS(json.cart[0].urls);
-            // const user = req.body;
-            // const x = await parserRSS("https://feeds.24.com/articles/news24/World/rss");
-            // console.log("terminé\n\n");
-            // console.log(JSON.parse((x)));
-            //await db.collection("news").insertOne( user );
+            //https://www.buzzfeed.com/mx  NO METER ESTA URL
+
+            // let aux = JSON.stringify(req.body);
+            // let arrayURL = JSON.parse(aux);
+            // console.log(arrayURL.cart.length);
+            // for(let i = 0; i<arrayURL.cart.length; i++){
+            //     let feedParsed = await parserRSS(arrayURL.cart[i].urls);
+            //     await db.collection("news").insertOne(JSON.parse((feedParsed)));
+            // }
+            
             //res.json({ status: 200 });
         }
 
@@ -42,5 +41,5 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         res.json({ status: 500, error: new Error(error).message });
     }
      
-    req.method === 'GET' ? res.json({status:200,response:"buena"}) : res.json({status:200});
+    req.method === 'GET' ? res.json({status:200,response:newss}) : res.json({status:200});
   }

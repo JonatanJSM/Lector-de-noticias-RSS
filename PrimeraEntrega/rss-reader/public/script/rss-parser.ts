@@ -1,5 +1,6 @@
 import Parser from "rss-parser";
 import {News} from "../interface/NewsInfo"
+import { WebNews } from "public/interface/WebNews";
 import sanitizeHtml from 'sanitize-html';
 
 class cardProps implements News {
@@ -22,12 +23,20 @@ class cardProps implements News {
   }
 }
 
+class web implements WebNews{
+  title: string;
+  newsItems: cardProps[];
+
+public constructor(title: string, newsItems: cardProps[]) {
+  this.title = title;
+  this.newsItems = newsItems;
+}
+}
+
 type NYT  = {
   _: number;
   '$': string;
 };
-
-var arrayNews: string="";
 
 type CustomFeed = {foo: string};
 type CustomItem = {
@@ -44,13 +53,12 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
   
 async function parserRRSFeed(urlss: string) {
     let photoCat : string = "";
-    const miarray: cardProps[] = [];
+    const arrayNews: cardProps[] = [];
     const feed = await parser.parseURL(urlss);
 
     let feedTitle = feed.title;
     // console.log(feed.image['url']); 
     //console.log(feed.image.url);
-    //console.log("elll titulo es"+feed.title);
   
     await fetch('https://api.thecatapi.com/v1/images/search',
       {
@@ -102,11 +110,12 @@ async function parserRRSFeed(urlss: string) {
           category = String(categories[0]);
         }
       }
-        miarray[i]=(new cardProps(tittle, description, link, category, photoCat, date, String(feedTitle)));
+        arrayNews[i]=(new cardProps(tittle, description, link, category, photoCat, date, String(feedTitle)));
         i++;
     });
 
-    var arrayJSON = JSON.stringify(miarray);
+    var objWebNews = new web(String(feedTitle), arrayNews);
+    var arrayJSON = JSON.stringify(objWebNews);
     return arrayJSON;
   } export default parserRRSFeed;
 

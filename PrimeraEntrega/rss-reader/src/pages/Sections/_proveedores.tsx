@@ -4,7 +4,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 export default function _proveedores(){
 
     type FormValues = {
-        cart: {
+        input: {
           urls: string;
         }[];
       };
@@ -17,12 +17,12 @@ export default function _proveedores(){
         control
       } = useForm<FormValues>({
         defaultValues: {
-          cart: [{ urls: ""}]
+          input: [{ urls: ""}]
         }
     });
 
     const {fields, append, remove} = useFieldArray({
-        name:'cart',
+        name:'input',
         control,
         rules: {
             required: "Please append at least 1 item"
@@ -30,15 +30,27 @@ export default function _proveedores(){
     })
 
     const onSubmit = (data:any) => {
-        console.log(data.cart[0].urls);
-        console.log(JSON.stringify(data));
-        fetch('../api/newsEP', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        })
+
+        // Si van a utilizar esto, hay que descomentar el que está en newsEP
+        // console.log(data.cart[0].urls);
+        // console.log(JSON.stringify(data));
+        // fetch('../api/newsEP', {
+        //     method: 'POST',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(data),
+        // })
+
+        // fetch('/api/newsEP', {
+        //   method: 'GET',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   }
+        // }).then(async response=>{
+        //   const data = await response.json();
+        //   console.log(data);
+        // })
     };
 
     return(
@@ -54,7 +66,7 @@ export default function _proveedores(){
                                     <section key={field.id}>
                                     <label>
                                         <input
-                                        {...register(`cart.${index}.urls`, { required: true })} className="form-control"
+                                        {...register(`input.${index}.urls`, { required: true })} className="form-control"
                                         />
                                     </label>
                                     <button type="button" onClick={() => remove(index)}>
@@ -65,9 +77,9 @@ export default function _proveedores(){
                                     </section>
                                 );
                                 })}
-                                {errors.cart?.at && <p className="text-danger">This field is required</p>}
+                                {errors.input?.at && <p className="text-danger">This field is required</p>}
                             </div>
-                            <p>{errors.cart?.root?.message}</p>
+                            <p>{errors.input?.root?.message}</p>
                             <button className="btn btn-primary" 
                                 type="button"
                                 onClick={() => {
