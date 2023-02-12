@@ -1,22 +1,24 @@
 import Parser from "rss-parser";
-import {NewsCardProps} from "../interface/NewsCardProps"
+import {News} from "../interface/NewsInfo"
 import sanitizeHtml from 'sanitize-html';
 
-class cardProps implements NewsCardProps {
+class cardProps implements News {
     title: string;
     description: string;
     link: string;
     category: string;
     image: string;
     pubDate: string;
+    webPage: string;
 
-  public constructor(title: string, desdescription: string, link: string, category: string, image: string, pubDate: string) {
+  public constructor(title: string, desdescription: string, link: string, category: string, image: string, pubDate: string, webPage: string) {
     this.title = title;
     this.description = desdescription;
     this.link = link;
     this.image = image
     this.category = category;
     this.pubDate = pubDate;
+    this.webPage = webPage;
   }
 }
 
@@ -44,10 +46,11 @@ async function parserRRSFeed(urlss: string) {
     let photoCat : string = "";
     const miarray: cardProps[] = [];
     const feed = await parser.parseURL(urlss);
+
     let feedTitle = feed.title;
     // console.log(feed.image['url']); 
     //console.log(feed.image.url);
-    console.log("elll titulo es"+feed.title);
+    //console.log("elll titulo es"+feed.title);
   
     await fetch('https://api.thecatapi.com/v1/images/search',
       {
@@ -99,27 +102,11 @@ async function parserRRSFeed(urlss: string) {
           category = String(categories[0]);
         }
       }
-        miarray[i]=(new cardProps(tittle, description, link, category, photoCat, date));
+        miarray[i]=(new cardProps(tittle, description, link, category, photoCat, date, String(feedTitle)));
         i++;
     });
 
     var arrayJSON = JSON.stringify(miarray);
     return arrayJSON;
-  }
-
-  function getDataFeed(urls:string){
-    parserRRSFeed(urls)
-      .then(jsonnn =>{
-        arrayNews = jsonnn
-      });
-  } 
-
-  //Es para probar la función intermediaria
-  function callGetDataFeed(urls:string){
-    getDataFeed(urls);
-    setTimeout(() => {
-      console.log(JSON.parse(arrayNews));
-  }, 3000)
-    
-  }export default callGetDataFeed;
+  } export default parserRRSFeed;
 

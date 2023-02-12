@@ -1,7 +1,9 @@
+//https://stackoverflow.com/questions/40884153/try-catch-blocks-with-async-await
 import type { NextApiRequest, NextApiResponse } from 'next'
 //@ts-ignore
 import clientPromise from 'lib/mongo/index';
 import { ObjectId } from 'mongodb';
+import parserRSS from 'public/script/rss-parser'
 
 interface User {
     _id?: string;
@@ -25,8 +27,17 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
         if(req.method === 'POST'){
             const user = req.body;
-
-            await db.collection("user").insertOne( user );
+            //console.log("llegué\n\n");
+            const x = await parserRSS("https://feeds.24.com/articles/news24/World/rss");
+            // const x = await parserRSS("https://www.buzzfeed.com").catch(function(e) {
+            //     //console.log(e); // "oh, no!"
+            //     console. clear();
+            //     return;
+            //   });
+            //console.log(x);
+            console.log("terminé\n\n");
+            console.log(JSON.parse((x)));
+            //await db.collection("user").insertOne( user );
             //res.json({ status: 200 });
         }
 

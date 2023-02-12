@@ -32,7 +32,7 @@ export default function _proveedores(){
     const onSubmit = (data:any) => {
         console.log(data.cart[0].urls);
         console.log(JSON.stringify(data));
-        fetch('../api/CRUD/1', {
+        fetch('../api/newsEP', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
