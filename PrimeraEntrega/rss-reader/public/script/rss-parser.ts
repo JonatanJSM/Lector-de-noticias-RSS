@@ -10,25 +10,26 @@ class cardProps implements News {
     category: string;
     image: string;
     pubDate: string;
-    webPage: string;
 
-  public constructor(title: string, desdescription: string, link: string, category: string, image: string, pubDate: string, webPage: string) {
+  public constructor(title: string, desdescription: string, link: string, category: string, image: string, pubDate: string) {
     this.title = title;
     this.description = desdescription;
     this.link = link;
     this.image = image
     this.category = category;
     this.pubDate = pubDate;
-    this.webPage = webPage;
   }
 }
 
 class web implements WebNews{
   title: string;
+  urlWebPage: string;
   newsItems: cardProps[];
+  
 
-public constructor(title: string, newsItems: cardProps[]) {
+public constructor(title: string, newsItems: cardProps[], urlWebPage: string) {
   this.title = title;
+  this.urlWebPage = urlWebPage;
   this.newsItems = newsItems;
 }
 }
@@ -108,9 +109,13 @@ async function parserRRSFeed(urlss: string) {
 
       categories  = Object.assign([], item.categories);
       if("NYT > World News" === String(feedTitle)){
-        let x = categories[0];
-        var result = JSON.parse(JSON.stringify(x)) as NYT;
-        category = String(result._);
+        if(item.categories === undefined){
+          category="News";
+        }else{
+          let x = categories[0];
+          var result = JSON.parse(JSON.stringify(x)) as NYT;
+          category = String(result._);
+        }
       }else{
         if(categories[0] === undefined){
             category="News";
@@ -118,11 +123,11 @@ async function parserRRSFeed(urlss: string) {
           category = String(categories[0]);
         }
       }
-        arrayNews[i]=(new cardProps(tittle, description, link, category, photoCat, date, String(feedTitle)));
+        arrayNews[i]=(new cardProps(tittle, description, link, category, photoCat, date));
         i++;
     });
 
-    var objWebNews = new web(String(feedTitle), arrayNews);
+    var objWebNews = new web(String(feedTitle), arrayNews, urlss);
     var arrayJSON = JSON.stringify(objWebNews);
     return arrayJSON;
   } export default parserRRSFeed;
