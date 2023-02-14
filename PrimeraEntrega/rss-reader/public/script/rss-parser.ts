@@ -52,10 +52,18 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
 });
   
 async function parserRRSFeed(urlss: string) {
+    console.log("parserRSSFeed");
+    
     let photoCat : string = "";
     const arrayNews: cardProps[] = [];
-    const feed = await parser.parseURL(urlss);
+    let feed:any;
+    try {
+       feed = await parser.parseURL(urlss);
 
+    } catch (error) {
+      return "error"
+    }
+    console.log("feed")
     let feedTitle = feed.title;
     // console.log(feed.image['url']); 
     //console.log(feed.image.url);
@@ -71,7 +79,7 @@ async function parserRRSFeed(urlss: string) {
     });
     
     let i = 0;
-    feed.items.forEach(item => {
+    feed.items.forEach((item:any) => {
       let tittle: string;
       let description: string;
       let link: string;

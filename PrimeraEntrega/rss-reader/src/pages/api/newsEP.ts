@@ -28,6 +28,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
             for(let i = 0; i<arrayURL.input.length; i++){
                 let feedParsed = await parserRSS(arrayURL.input[i].urls);
                 console.log(feedParsed);
+                if(feedParsed=="error") throw new Error("bad url");
                 //await db.collection("news").insertOne(JSON.parse((feedParsed)));
             }
             
@@ -40,7 +41,9 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
 
     } catch (error:any) {
         res.json({ status: 500, error: new Error(error).message });
+        return;
     }
+     console.log("not exec");
      
     req.method === 'GET' ? res.json({status:200,response:newss}) : res.json({status:200});
   }
