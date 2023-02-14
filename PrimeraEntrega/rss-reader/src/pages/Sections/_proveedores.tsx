@@ -34,13 +34,13 @@ export default function _proveedores(){
         // Si van a utilizar esto, hay que descomentar el que está en newsEP
         // console.log(data.cart[0].urls);
         // console.log(JSON.stringify(data));
-        // fetch('../api/newsEP', {
-        //     method: 'POST',
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(data),
-        // })
+        fetch('../api/newsEP', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        })
 
         // fetch('/api/newsEP', {
         //   method: 'GET',

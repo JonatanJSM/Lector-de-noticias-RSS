@@ -22,13 +22,14 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         if(req.method === 'POST'){
             //https://www.buzzfeed.com/mx  NO METER ESTA URL
 
-            // let aux = JSON.stringify(req.body);
-            // let arrayURL = JSON.parse(aux);
-            // console.log(arrayURL.cart.length);
-            // for(let i = 0; i<arrayURL.cart.length; i++){
-            //     let feedParsed = await parserRSS(arrayURL.cart[i].urls);
-            //     await db.collection("news").insertOne(JSON.parse((feedParsed)));
-            // }
+            let aux = JSON.stringify(req.body);
+            let arrayURL = JSON.parse(aux);
+            console.log(arrayURL.input.length);
+            for(let i = 0; i<arrayURL.input.length; i++){
+                let feedParsed = await parserRSS(arrayURL.input[i].urls);
+                console.log(feedParsed);
+                //await db.collection("news").insertOne(JSON.parse((feedParsed)));
+            }
             
             //res.json({ status: 200 });
         }
