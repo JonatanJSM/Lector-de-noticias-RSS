@@ -31,9 +31,15 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                 //await db.collection("news").insertOne(JSON.parse((feedParsed)));
                 newsParsed[i] = feedParsed;
             }
-
+            console.log("uys");
+            
             for(let i = 0; i<newsParsed.length; i++){
-                await db.collection("news").insertOne(JSON.parse((newsParsed[i])));
+                let auxURLPage = JSON.parse(newsParsed[i]);
+                const foundItem = await db.collection("news").updateOne({urlWebPage: auxURLPage.urlWebPage},{$set: JSON.parse((newsParsed[i]))});
+                if(foundItem.matchedCount === 0){
+                    //console.log(JSON.parse((newsParsed[i])));
+                    await db.collection("news").insertOne(JSON.parse((newsParsed[i])));
+                }
             }
             
         }
