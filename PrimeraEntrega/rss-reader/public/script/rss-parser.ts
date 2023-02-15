@@ -53,7 +53,7 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
 });
   
 async function parserRRSFeed(urlss: string) {
-    console.log("parserRSSFeed");
+    //console.log("parserRSSFeed");
     
     let photoCat : string = "";
     const arrayNews: cardProps[] = [];
@@ -64,7 +64,7 @@ async function parserRRSFeed(urlss: string) {
     } catch (error) {
       return "error"
     }
-    console.log("feed")
+    //console.log("feed")
     let feedTitle = feed.title;
     // console.log(feed.image['url']); 
     //console.log(feed.image.url);

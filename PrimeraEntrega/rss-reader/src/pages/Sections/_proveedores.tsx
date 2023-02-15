@@ -1,8 +1,12 @@
 import React from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { Alert } from '@mui/material';
+import { useState } from 'react';
 
 export default function _proveedores(){
-
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showAlertError, setShowAlertError] = React.useState(false);
+    const [showAlertSuccess , setShowAlertSuccess] = React.useState(false);
     type FormValues = {
         input: {
           urls: string;
@@ -25,23 +29,33 @@ export default function _proveedores(){
         name:'input',
         control,
         rules: {
-            required: "Please append at least 1 item"
+            required: "Por favor, agregue al menos un input"
+            // validate: (url) =>{
+            //     // const urlRegex = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
+            //     // const url = "https://www.example.com";
+            //     // console.log(urlRegex.test(url)); // outputs: true
+            // }
           }
+        
     })
 
     const onSubmit = (data:any) => {
-
-        // Si van a utilizar esto, hay que descomentar el que está en newsEP
-        // console.log(data.cart[0].urls);
-        // console.log(JSON.stringify(data));
         fetch('../api/newsEP', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(data),
-        })
-
+        }).then(async response => {
+            if (!response.ok) {
+                const data = await response.json();
+                setErrorMessage(data.response);
+                setShowAlertError(true);
+            }else{
+                setShowAlertSuccess(true);
+            }
+          })
+     
         // fetch('/api/newsEP', {
         //   method: 'GET',
         //   headers: {
@@ -66,18 +80,18 @@ export default function _proveedores(){
                                     <section key={field.id}>
                                     <label>
                                         <input
-                                        {...register(`input.${index}.urls`, { required: true })} className="form-control"
+                                        {...register(`input.${index}.urls`, { required: true, pattern: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/ })} className="form-control"
                                         />
                                     </label>
                                     <button type="button" onClick={() => remove(index)}>
-                                        Delete
+                                        Eliminar
                                     </button>
                                     <br/>
                                     <br/>
                                     </section>
                                 );
                                 })}
-                                {errors.input?.at && <p className="text-danger">This field is required</p>}
+                                {errors.input?.at && <p className="text-danger">Este campo es requerido o incompleto</p>}
                             </div>
                             <p>{errors.input?.root?.message}</p>
                             <button className="btn btn-primary" 
@@ -87,8 +101,14 @@ export default function _proveedores(){
                                     urls: ""
                                     });
                                 }}
-                            >Append</button>
-                        <button type="submit" className="btn btn-primary">Submit</button>
+                            >Agregar</button>
+                            <button type="submit" className="btn btn-primary">Enviar</button>
+                        {showAlertError && (
+                            <Alert onClose={() => {setShowAlertError(false)}} variant="filled" severity="error">{`La url ${errorMessage} provocó un error`}</Alert>
+                            )}
+                        {showAlertSuccess && (
+                            <Alert onClose={() => {setShowAlertSuccess(false)}} variant="filled" severity="success">Se guardaron los datos correctamente</Alert>
+                            )}
                     </form>
                 </div>
             </div>
