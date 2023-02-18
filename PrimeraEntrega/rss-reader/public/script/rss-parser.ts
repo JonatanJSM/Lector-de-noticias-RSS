@@ -1,24 +1,43 @@
 import Parser from "rss-parser";
-import {NewsCardProps} from "../interface/NewsCardProps"
+import {News} from "../interface/NewsInfo"
+import { WebNews } from "public/interface/WebNews";
 import sanitizeHtml from 'sanitize-html';
 
-class cardProps implements NewsCardProps {
+class cardProps implements News {
     title: string;
     description: string;
     link: string;
-    summary: string;
+    category: string;
     image: string;
+    pubDate: string;
 
-  public constructor(title: string, desdescription: string, link: string, summary: string, image: string) {
+  public constructor(title: string, desdescription: string, link: string, category: string, image: string, pubDate: string) {
     this.title = title;
     this.description = desdescription;
     this.link = link;
-    this.summary = summary;
     this.image = image
+    this.category = category;
+    this.pubDate = pubDate;
   }
 }
 
-var arrayNews: string="";
+class web implements WebNews{
+  title: string;
+  urlWebPage: string;
+  newsItems: cardProps[];
+  
+
+public constructor(title: string, newsItems: cardProps[], urlWebPage: string) {
+  this.title = title;
+  this.urlWebPage = urlWebPage;
+  this.newsItems = newsItems;
+}
+}
+
+type NYT  = {
+  _: number;
+  '$': string;
+};
 
 type CustomFeed = {foo: string};
 type CustomItem = {
@@ -33,13 +52,22 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
     }
 });
   
-async function parserRRSFeed() {
+async function parserRRSFeed(urlss: string) {
+    //console.log("parserRSSFeed");
+    
     let photoCat : string = "";
-    const miarray: cardProps[] = [];
-    const feed = await parser.parseURL('https://timesofindia.indiatimes.com/rssfeeds/296589292.cms');
+    const arrayNews: cardProps[] = [];
+    let feed:any;
+    try {
+       feed = await parser.parseURL(urlss);
+
+    } catch (error) {
+      return "error"
+    }
+    //console.log("feed")
+    let feedTitle = feed.title;
     // console.log(feed.image['url']); 
     //console.log(feed.image.url);
-    //console.log(feed.items);
   
     await fetch('https://api.thecatapi.com/v1/images/search',
       {
@@ -48,19 +76,22 @@ async function parserRRSFeed() {
       })
       .then(response => response.json())
       .then(data => {
-        photoCat = data[0].url;
+      photoCat = data[0].url;
     });
     
     let i = 0;
-    feed.items.forEach(item => {
+    feed.items.forEach((item:any) => {
       let tittle: string;
       let description: string;
       let link: string;
       let summary: string;
+      let date: string;
+      let category: string;
+      let categories: string[] =[];
 
       tittle = String(item.title);
       link = String(item.link);
-      
+      date = String(item.isoDate);
 
       if(item.description === undefined){
         description = sanitizeHtml(item.summary);
@@ -75,28 +106,29 @@ async function parserRRSFeed() {
         }
         summary = "Proin egestas efficitur nisl, sit amet cursus augue sollicitudin nec. Phasellus euismod nec tellus lobortis feugiat. Cras hendrerit vel tortor ac cursus. Morbi tortor mauris, aliquam eget mauris viverra, porta varius leo.";
       }
-        miarray[i]=(new cardProps(tittle, description, link, summary,photoCat));
+
+      categories  = Object.assign([], item.categories);
+      if("NYT > World News" === String(feedTitle)){
+        if(item.categories === undefined){
+          category="News";
+        }else{
+          let x = categories[0];
+          var result = JSON.parse(JSON.stringify(x)) as NYT;
+          category = String(result._);
+        }
+      }else{
+        if(categories[0] === undefined){
+            category="News";
+        }else{
+          category = String(categories[0]);
+        }
+      }
+        arrayNews[i]=(new cardProps(tittle, description, link, category, photoCat, date));
         i++;
     });
 
-    console.log(miarray);
-    var arrayJSON = JSON.stringify(miarray);
+    var objWebNews = new web(String(feedTitle), arrayNews, urlss);
+    var arrayJSON = JSON.stringify(objWebNews);
     return arrayJSON;
-  }
-
-  function getDataFeed(){
-    parserRRSFeed()
-      .then(jsonnn =>{
-        arrayNews = jsonnn
-      });
-  } 
-
-  //Es para probar la función intermediaria
-  function callGetDataFeed(){
-    getDataFeed();
-    setTimeout(() => {
-      console.log("Hello "+arrayNews)
-  }, 1000)
-    
-  }export default callGetDataFeed;
+  } export default parserRRSFeed;
 

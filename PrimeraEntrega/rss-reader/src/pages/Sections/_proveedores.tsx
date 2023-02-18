@@ -1,22 +1,14 @@
-//https://react-hook-form.com/get-started
-// https://react-hook-form.com/api/usefieldarray
 import React from "react";
 import { useFieldArray, useForm } from "react-hook-form";
+import { Alert } from '@mui/material';
+import { useState } from 'react';
 
 export default function _proveedores(){
-    // const {
-    //     register,
-    //     handleSubmit,
-    //     formState: { errors },
-    //     getValues,
-    //   } = useForm({
-    //     defaultValues: {
-    //         urls: ""
-    //     }
-    // });
-
+    const [errorMessage, setErrorMessage] = useState('');
+    const [showAlertError, setShowAlertError] = React.useState(false);
+    const [showAlertSuccess , setShowAlertSuccess] = React.useState(false);
     type FormValues = {
-        cart: {
+        input: {
           urls: string;
         }[];
       };
@@ -29,37 +21,50 @@ export default function _proveedores(){
         control
       } = useForm<FormValues>({
         defaultValues: {
-          cart: [{ urls: ""}]
+          input: [{ urls: ""}]
         }
     });
 
     const {fields, append, remove} = useFieldArray({
-        name:'cart',
+        name:'input',
         control,
         rules: {
-            required: "Please append at least 1 item"
+            required: "Por favor, agregue al menos un input"
+            // validate: (url) =>{
+            //     // const urlRegex = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
+            //     // const url = "https://www.example.com";
+            //     // console.log(urlRegex.test(url)); // outputs: true
+            // }
           }
+        
     })
 
-    // const [inputsURL, setInputsURL] = React.useState([
-	// 	{
-	// 		id: uuidv4(),
-	// 	},
-	// ]);
-
-    // const addInputURL = () => {
-	// 	//Todo generate random id
-
-	// 	let _inputsURL = [...inputsURL]
-	// 	_inputsURL.push({
-	// 		id: uuidv4(),
-	// 	})
-	// 	setInputsURL(_inputsURL);
-	// }
-
     const onSubmit = (data:any) => {
-        console.log(data.cart[0].urls)
-        console.log(JSON.stringify(data));
+        fetch('../api/newsEP', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        }).then(async response => {
+            if (!response.ok) {
+                const data = await response.json();
+                setErrorMessage(data.response);
+                setShowAlertError(true);
+            }else{
+                setShowAlertSuccess(true);
+            }
+          })
+     
+        // fetch('/api/newsEP', {
+        //   method: 'GET',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   }
+        // }).then(async response=>{
+        //   const data = await response.json();
+        //   console.log(data);
+        // })
     };
 
     return(
@@ -75,24 +80,20 @@ export default function _proveedores(){
                                     <section key={field.id}>
                                     <label>
                                         <input
-                                        {...register(`cart.${index}.urls`, { required: true })} className="form-control"
+                                        {...register(`input.${index}.urls`, { required: true, pattern: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/ })} className="form-control"
                                         />
                                     </label>
                                     <button type="button" onClick={() => remove(index)}>
-                                        Delete
+                                        Eliminar
                                     </button>
                                     <br/>
                                     <br/>
                                     </section>
                                 );
                                 })}
-                            {/* {inputsURL.map((urll) =>(
-                                <input type="text" className="form-control"  {...register("urls", { required: true })} autoComplete='off' key={urll.id}/>
-                            ))}
-                            {errors.urls && <span className="text-danger">This field is required</span>} */}
-                                {errors.cart?.at && <p className="text-danger">This field is required</p>}
+                                {errors.input?.at && <p className="text-danger">Este campo es requerido o incompleto</p>}
                             </div>
-                            <p>{errors.cart?.root?.message}</p>
+                            <p>{errors.input?.root?.message}</p>
                             <button className="btn btn-primary" 
                                 type="button"
                                 onClick={() => {
@@ -100,8 +101,14 @@ export default function _proveedores(){
                                     urls: ""
                                     });
                                 }}
-                            >Append</button>
-                        <button type="submit" className="btn btn-primary">Submit</button>
+                            >Agregar</button>
+                            <button type="submit" className="btn btn-primary">Enviar</button>
+                        {showAlertError && (
+                            <Alert onClose={() => {setShowAlertError(false)}} variant="filled" severity="error">{`La url ${errorMessage} provocó un error`}</Alert>
+                            )}
+                        {showAlertSuccess && (
+                            <Alert onClose={() => {setShowAlertSuccess(false)}} variant="filled" severity="success">Se guardaron los datos correctamente</Alert>
+                            )}
                     </form>
                 </div>
             </div>

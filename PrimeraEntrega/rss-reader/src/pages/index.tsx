@@ -22,13 +22,44 @@ export default function Home() {
   // const { data, error, isLoading } = useSWR<any>('/api/CRUD/'+`test`, fetcher);
   const [value, setValue] = React.useState(0);
   useEffect(()=>{
-    // fetch('/api/CRUD/1', {
+    // fetch('/api/userEP', {
     //   method: 'POST',
     //   headers: {
     //     'Content-Type': 'application/json',
     //   },
-    //   body: JSON.stringify({name: 'test', CRUD: 'test'}),
+    //   body: JSON.stringify({name: 'test', age: 9, height: 130}),
+    // }).then(status=> {/*console.log(status)*/})
+    
+
+    // fetch('/api/userEP', {
+    //   method: 'GET',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   }
+    // }).then(async response=>{
+    //   const data = await response.json();
+    //   console.log(data);
     // })
+
+    // fetch('/api/userEP', {
+    //   method: 'DELETE',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({name: 'test'}),
+    // }).then(status=> {/*console.log(status)*/}) 
+
+    
+    // const random = Math.floor(Math.random() * 1000);
+    // const user = {_id:'63e56e9400508f74c56a6cd6',name: 'John', age: 8, height: 10};
+    // fetch('/api/userEP', {
+    //     method: 'PUT',
+    //     headers: {
+    //       'Content-Type': 'application/json',
+    //       'values': JSON.stringify(user._id),
+    //     },
+    //     body: JSON.stringify({name: 'John', age: random/10, height: random}),
+    //   }).then(status=> {/*console.log(status)*/})
 
   })
 
