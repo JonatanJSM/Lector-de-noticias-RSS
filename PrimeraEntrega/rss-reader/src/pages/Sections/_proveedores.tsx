@@ -3,11 +3,14 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { Alert } from '@mui/material';
 import { useState } from 'react';
 import {WebNews} from 'public/interface/WebNews';
+import CircularProgress from '@mui/material/CircularProgress';
 
 export default function _proveedores(){
     const [errorMessage, setErrorMessage] = useState('');
     const [showAlertError, setShowAlertError] = React.useState(false);
     const [showAlertSuccess , setShowAlertSuccess] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
+
     type FormValues = {
         input: {
           urls: string;
@@ -20,7 +23,6 @@ export default function _proveedores(){
           }})
           .then(async response=>{
             const data = await response.json();
-            console.log(data);
             setValue('input',data.response.map((item:WebNews)=>{return {urls:item.urlWebPage}}));
             })
     },[])
@@ -54,6 +56,7 @@ export default function _proveedores(){
     })
 
     const onSubmit = (data:any) => {
+        setIsLoading(true);
         fetch('../api/newsEP', {
             method: 'POST',
             headers: {
@@ -68,12 +71,11 @@ export default function _proveedores(){
             }else{
                 setShowAlertSuccess(true);
             }
+            setIsLoading(false);
           })
     };
 
-    function deleteProvider(index:number){
-        console.log(getValues('input')[index]);
-        
+    function deleteProvider(index:number){        
         fetch('../api/newsEP', {
             method: 'DELETE',
             headers: {
@@ -126,12 +128,13 @@ export default function _proveedores(){
                                     });
                                 }}
                             >Agregar</button> &nbsp;
-                            <button type="submit" className="btn btn-primary">Enviar</button>
+                            <button type="submit" className="btn btn-primary" disabled={isLoading}>Enviar</button>
+                            {isLoading && <span style={{marginLeft:'5pt'}}> <CircularProgress color="secondary" size='2rem' style={{paddingTop:'1pt'}}/> </span>}
                         {showAlertError && (
-                            <Alert onClose={() => {setShowAlertError(false)}} variant="filled" severity="error">{`La url ${errorMessage} provocó un error`}</Alert>
+                            <Alert onClose={() => {setShowAlertError(false)}} variant="filled" severity="error" style={{marginTop:'5pt'}}>{`La url ${errorMessage} provocó un error`}</Alert>
                             )}
                         {showAlertSuccess && (
-                            <Alert onClose={() => {setShowAlertSuccess(false)}} variant="filled" severity="success">Se guardaron los datos correctamente</Alert>
+                            <Alert onClose={() => {setShowAlertSuccess(false)}} variant="filled" severity="success" style={{marginTop:'5pt'}}>Se guardaron los datos correctamente</Alert>
                             )}
                     </form>
                 </div>

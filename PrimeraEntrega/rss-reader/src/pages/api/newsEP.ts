@@ -15,8 +15,8 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         let newsParsed: string[] =[];
         
         if(req.method === 'GET'){
-            const newsDb = await db.collection("news").find({}).toArray();
-            newss = newsDb;
+            const newsDb:WebNews[] = await db.collection("news").find({}).toArray();
+            newss = newsDb;            
         }
 
         if(req.method === 'POST'){
@@ -47,7 +47,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         if(req.method === 'DELETE'){
             let aux = JSON.stringify(req.body);
             let urlToDelete = JSON.parse(aux);
-            console.log(urlToDelete.urls);
             
             await db.collection("news").deleteOne({urlWebPage: urlToDelete.urls});
         }
