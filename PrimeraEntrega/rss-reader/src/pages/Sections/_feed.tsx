@@ -13,9 +13,7 @@ export default function _feed(){
           }})
           .then(async response=>{
             const data = await response.json();
-            newsProviders.current = data.response;
-            console.log('data',data);
-            
+            newsProviders.current = data.response;            
             getNewsProvider();
             })
     },[])
@@ -25,16 +23,14 @@ export default function _feed(){
     }
 
     function getListOfNews(arrayOfNews: News[],id:string){
-        if(news.length<150){
-            setNews([...news,...arrayOfNews]);
-            console.log(arrayOfNews);
-            
-        }
+        console.log(arrayOfNews.length);
+        
+        setNews(news=>[...news,...arrayOfNews]);            
     }    
 
     return(
         <div className="vstack gap-3 justify-content-center">
-            <h1>Feed</h1>
+            <h1>Feed: {news.length}</h1>
             
             {
                news.length > 0 && news.map((item,index)=>{return <NewsCard key={index} news={item} />})

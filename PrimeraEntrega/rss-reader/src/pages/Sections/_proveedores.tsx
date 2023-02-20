@@ -23,7 +23,6 @@ export default function _proveedores(){
           }})
           .then(async response=>{
             const data = await response.json();
-            console.log(data);
             setValue('input',data.response.map((item:WebNews)=>{return {urls:item.urlWebPage}}));
             })
     },[])
@@ -76,9 +75,7 @@ export default function _proveedores(){
           })
     };
 
-    function deleteProvider(index:number){
-        console.log(getValues('input')[index]);
-        
+    function deleteProvider(index:number){        
         fetch('../api/newsEP', {
             method: 'DELETE',
             headers: {

@@ -40,13 +40,10 @@ const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
   const [expanded, setExpanded] = React.useState(false);
 
   React.useEffect(() => {
-    console.log(news?.image,'news');
     
   }, []);
 
-  const handleExpandClick = () => {
-    console.log(news,'news');
-    
+  const handleExpandClick = () => {    
     setExpanded(!expanded);
   };
 
