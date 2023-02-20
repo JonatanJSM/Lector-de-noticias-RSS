@@ -53,5 +53,5 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         return;
     }
      
-    req.method === 'GET' ? res.json({status:200,response:newss}) : res.json({status:200});
+    req.method === 'GET' ? res.status(200).json({response:newss}) : res.status(200);
   }

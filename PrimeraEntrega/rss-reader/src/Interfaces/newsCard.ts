@@ -2,8 +2,7 @@ export interface NewsCardProps {
     title?: string;
     description?: string;
     link?: string;
-    summary?: string;
+    category?: string;
     pubDate?: string;
-    source?: string;
     image?: string;
 }

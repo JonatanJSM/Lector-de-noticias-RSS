@@ -101,7 +101,7 @@ export default function _proveedores(){
                                     urls: ""
                                     });
                                 }}
-                            >Agregar</button>
+                            >Agregar</button> &nbsp;
                             <button type="submit" className="btn btn-primary">Enviar</button>
                         {showAlertError && (
                             <Alert onClose={() => {setShowAlertError(false)}} variant="filled" severity="error">{`La url ${errorMessage} provocó un error`}</Alert>
