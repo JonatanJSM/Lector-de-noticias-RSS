@@ -14,7 +14,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { NewsCardProps } from '../../Interfaces/newsCard';
+import { NewsCardProps } from '../Interfaces/newsCard';
+import { News } from 'public/interface/NewsInfo';
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -31,28 +32,39 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
-export default function NewsCard(news: NewsCardProps) {
+interface ComponentNewsCardProps {
+  news:News;
+}
+
+const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
   const [expanded, setExpanded] = React.useState(false);
 
+  React.useEffect(() => {
+    console.log(news?.image,'news');
+    
+  }, []);
+
   const handleExpandClick = () => {
+    console.log(news?.title,'news');
+    
     setExpanded(!expanded);
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345,marginBottom:'10pt' }}>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
+        // avatar={
+        //   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+        //     R
+        //   </Avatar>
+        // }
         // action={
         //   <IconButton aria-label="settings">
         //     <MoreVertIcon />
         //   </IconButton>
         // }
-        title={news.title}
-        subheader={news.pubDate}
+        title={news?.title}
+        subheader={news?.pubDate.substring(0,10)}
       />
       <CardMedia
         component="img"
@@ -62,7 +74,7 @@ export default function NewsCard(news: NewsCardProps) {
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {news.summary}
+          {news?.category}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -85,10 +97,11 @@ export default function NewsCard(news: NewsCardProps) {
         <CardContent>
           <Typography paragraph>Detalles:</Typography>
           <Typography paragraph>
-            {news.description}
+            {news?.description}
           </Typography>
         </CardContent>
       </Collapse>
     </Card>
   );
 }
+export default NewsCard;

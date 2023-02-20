@@ -1,10 +1,10 @@
 export interface News {
-    title?: string;
-    description?: string;
-    link?: string;
+    title: string;
+    description: string;
+    link: string;
     summary?: string;
-    pubDate?: string;
+    pubDate: string;
     webPage?: string;
-    image?: string;
-    category?: string;
+    image: string;
+    category: string;
 }
