@@ -13,7 +13,6 @@ export default function _feed(){
           }})
           .then(async response=>{
             const data = await response.json();
-            console.log(data);
             newsProviders.current = data.response;
             getNewsProvider();
             })

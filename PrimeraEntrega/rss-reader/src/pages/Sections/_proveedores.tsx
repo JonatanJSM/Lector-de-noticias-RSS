@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { Alert } from '@mui/material';
 import { useState } from 'react';
+import {WebNews} from 'public/interface/WebNews';
 
 export default function _proveedores(){
     const [errorMessage, setErrorMessage] = useState('');
@@ -13,11 +14,24 @@ export default function _proveedores(){
         }[];
       };
 
+    useEffect(()=>{
+        fetch('api/newsEP',{method: 'GET',headers: {
+            'Content-Type': 'application/json',
+          }})
+          .then(async response=>{
+            const data = await response.json();
+            console.log(data);
+            setValue('input',data.response.map((item:WebNews)=>{return {urls:item.urlWebPage}}));
+            })
+    },[])
+
     const {
         register,
         formState: { errors },
         handleSubmit,
+        setValue,
         watch,
+        getValues,
         control
       } = useForm<FormValues>({
         defaultValues: {
@@ -55,17 +69,27 @@ export default function _proveedores(){
                 setShowAlertSuccess(true);
             }
           })
-     
-        // fetch('/api/newsEP', {
-        //   method: 'GET',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //   }
-        // }).then(async response=>{
-        //   const data = await response.json();
-        //   console.log(data);
-        // })
     };
+
+    function deleteProvider(index:number){
+        console.log(getValues('input')[index]);
+        
+        fetch('../api/newsEP', {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(getValues('input')[index])
+        }).then(async response => {
+            if (!response.ok) {
+                const data = await response.json();
+                setErrorMessage(data.response);
+                setShowAlertError(true);
+            }else{
+                setShowAlertSuccess(true);
+            }
+          })
+    }
 
     return(
         <div>
@@ -83,7 +107,7 @@ export default function _proveedores(){
                                         {...register(`input.${index}.urls`, { required: true, pattern: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/ })} className="form-control"
                                         />
                                     </label>
-                                    <button type="button" onClick={() => remove(index)}>
+                                    <button className="btn btn-danger" style={{marginLeft:'5pt'}} type="button" onClick={() => {deleteProvider(index);remove(index); }}>
                                         Eliminar
                                     </button>
                                     <br/>

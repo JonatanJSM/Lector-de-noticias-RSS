@@ -3,6 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import clientPromise from 'lib/mongo/index';
 import parserRSS from 'public/script/rss-parser'
 import { WebNews } from 'public/interface/WebNews';
+import { resolve } from 'path';
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     let newss: WebNews[]=[];
@@ -31,7 +32,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                 //await db.collection("news").insertOne(JSON.parse((feedParsed)));
                 newsParsed[i] = feedParsed;
             }
-            console.log("uys");
             
             for(let i = 0; i<newsParsed.length; i++){
                 let auxURLPage = JSON.parse(newsParsed[i]);
@@ -44,7 +44,13 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
             
         }
 
-        if(req.method === 'DELETE'){}
+        if(req.method === 'DELETE'){
+            let aux = JSON.stringify(req.body);
+            let urlToDelete = JSON.parse(aux);
+            console.log(urlToDelete.urls);
+            
+            await db.collection("news").deleteOne({urlWebPage: urlToDelete.urls});
+        }
 
         if(req.method === 'PUT'){}
 
@@ -53,5 +59,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         return;
     }
      
-    req.method === 'GET' ? res.status(200).json({response:newss}) : res.status(200);
+    req.method === 'GET' ? res.status(200).json({response:newss}) : res.status(200).end();
+    resolve();
   }
