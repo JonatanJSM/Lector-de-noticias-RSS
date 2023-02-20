@@ -40,7 +40,8 @@ const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
   const [expanded, setExpanded] = React.useState(false);
 
   React.useEffect(() => {
-    console.log(news?.title,'news');
+    console.log(news?.image,'news');
+    
   }, []);
 
   const handleExpandClick = () => {
@@ -50,20 +51,20 @@ const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
   };
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
+    <Card sx={{ maxWidth: 345,marginBottom:'10pt' }}>
       <CardHeader
-        avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-            R
-          </Avatar>
-        }
+        // avatar={
+        //   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+        //     R
+        //   </Avatar>
+        // }
         // action={
         //   <IconButton aria-label="settings">
         //     <MoreVertIcon />
         //   </IconButton>
         // }
         title={news?.title}
-        subheader={news?.pubDate}
+        subheader={news?.pubDate.substring(0,10)}
       />
       <CardMedia
         component="img"

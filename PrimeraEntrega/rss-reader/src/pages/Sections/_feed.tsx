@@ -24,13 +24,13 @@ export default function _feed(){
     }
 
     function getListOfNews(arrayOfNews: News[],id:string){
-        if(id==='0'){
-            setNews(arrayOfNews);
+        if(news.length<150){
+            setNews([...news,...arrayOfNews]);
         }
     }    
 
     return(
-        <div>
+        <div className="vstack gap-3 justify-content-center">
             <h1>Feed</h1>
             
             {
