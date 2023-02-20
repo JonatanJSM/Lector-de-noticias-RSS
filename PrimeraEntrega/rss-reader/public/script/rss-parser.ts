@@ -34,6 +34,7 @@ public constructor(title: string, newsItems: CardProps[], urlWebPage: string) {
 }
 }
 
+const api_key = "live_eDuSRdTTQbgyRCDkOVVhgBy93zJyTZFFqvXXbkqysVv2BSJSkzanx0aj69SNXNfH"
 type NYT  = {
   _: number;
   '$': string;
@@ -54,8 +55,8 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
   
 async function parserRRSFeed(urlss: string) {
     //console.log("parserRSSFeed");
-    
-    let photoCat : string = "";
+    let photoCat: string = "https://cdn2.thecatapi.com/images/7e7.jpg";
+    let photosCats : string[] = [];
     const arrayNews: CardProps[] = [];
     let feed:any;
     try {
@@ -68,17 +69,27 @@ async function parserRRSFeed(urlss: string) {
     let feedTitle = feed.title;
     // console.log(feed.image['url']); 
     //console.log(feed.image.url);
-  
-    await fetch('https://api.thecatapi.com/v1/images/search',
+
+    console.log("hay noticas"+feed.items.length);
+    let numPhotosCat = feed.items.length;
+    console.log("hola?"+numPhotosCat)
+    
+    await fetch('https://api.thecatapi.com/v1/images/search?limit='+numPhotosCat,
       {
          method: 'GET',
-         headers: {'Content-Type': 'application/json'}
+         headers: {'Content-Type': 'application/json','x-api-key': api_key}
       })
       .then(response => response.json())
-      .then(data => {
-      photoCat = data[0].url;
-    });
-    
+      .then((data) => {
+        let imagesData = data;
+        let i = 0;
+        imagesData.map(function(imageData: { url: any; }) {
+          photosCats[i] = imageData.url;
+          //console.log("hye",imageData.url,"   ", imageData.url.length)
+          i++;
+        });
+      })
+
     let i = 0;
     feed.items.forEach((item:any) => {
       let tittle: string;
@@ -123,7 +134,12 @@ async function parserRRSFeed(urlss: string) {
           category = String(categories[0]);
         }
       }
+
+      if(photosCats[i] === undefined){
         arrayNews[i]=(new CardProps(tittle, description, link, category, photoCat, date));
+      }else{
+        arrayNews[i]=(new CardProps(tittle, description, link, category, photosCats[i], date));
+      }
         i++;
     });
 
