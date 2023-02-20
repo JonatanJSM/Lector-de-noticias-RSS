@@ -62,7 +62,7 @@ export default function NewsCard(news: NewsCardProps) {
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          {news.summary}
+          {news.category}
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
