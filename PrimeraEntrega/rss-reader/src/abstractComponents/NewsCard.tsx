@@ -14,7 +14,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { NewsCardProps } from '../../Interfaces/newsCard';
+import { NewsCardProps } from '../Interfaces/newsCard';
 import { News } from 'public/interface/NewsInfo';
 
 interface ExpandMoreProps extends IconButtonProps {
@@ -36,7 +36,7 @@ interface ComponentNewsCardProps {
   news:News;
 }
 
-export const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
+const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
   const [expanded, setExpanded] = React.useState(false);
 
   React.useEffect(() => {
@@ -103,3 +103,4 @@ export const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
     </Card>
   );
 }
+export default NewsCard;

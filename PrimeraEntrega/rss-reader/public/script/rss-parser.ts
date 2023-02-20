@@ -3,7 +3,7 @@ import {News} from "../interface/NewsInfo"
 import { WebNews } from "public/interface/WebNews";
 import sanitizeHtml from 'sanitize-html';
 
-class cardProps implements News {
+class CardProps implements News {
     title: string;
     description: string;
     link: string;
@@ -24,10 +24,10 @@ class cardProps implements News {
 class web implements WebNews{
   title: string;
   urlWebPage: string;
-  newsItems: cardProps[];
+  newsItems: CardProps[];
   
 
-public constructor(title: string, newsItems: cardProps[], urlWebPage: string) {
+public constructor(title: string, newsItems: CardProps[], urlWebPage: string) {
   this.title = title;
   this.urlWebPage = urlWebPage;
   this.newsItems = newsItems;
@@ -56,7 +56,7 @@ async function parserRRSFeed(urlss: string) {
     //console.log("parserRSSFeed");
     
     let photoCat : string = "";
-    const arrayNews: cardProps[] = [];
+    const arrayNews: CardProps[] = [];
     let feed:any;
     try {
        feed = await parser.parseURL(urlss);
@@ -123,7 +123,7 @@ async function parserRRSFeed(urlss: string) {
           category = String(categories[0]);
         }
       }
-        arrayNews[i]=(new cardProps(tittle, description, link, category, photoCat, date));
+        arrayNews[i]=(new CardProps(tittle, description, link, category, photoCat, date));
         i++;
     });
 

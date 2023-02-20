@@ -1,12 +1,10 @@
 import { useEffect, useRef, useState } from "react"
-import {NewsCard} from "../CustomComponents/NewsCard"
-import handler from "../api/newsEP"
+import NewsCard from "../../abstractComponents/NewsCard"
 import { WebNews } from 'public/interface/WebNews';
 import  { News }  from 'public/interface/NewsInfo';
 
 export default function _feed(){
     const newsProviders = useRef<WebNews[]>([]);
-    const listOfNews = useRef<News[]>([]);
     const [news, setNews] = useState<News[]>([]);
 
     useEffect(()=>{
@@ -28,20 +26,12 @@ export default function _feed(){
     function getListOfNews(arrayOfNews: News[],id:string){
         if(id==='0'){
             setNews(arrayOfNews);
-            listOfNews.current = [...arrayOfNews];
         }
-
-        // listOfNews.current = [...arrayOfNews];
-        // setNews([...arrayOfNews]);
     }    
 
     return(
         <div>
             <h1>Feed</h1>
-            {/* {
-                listOfNews.current.map((item,index)=>{return NewsCard(item)})
-                news.map((item,index)=>{return NewsCard(item)})
-            } */}
             
             {
                news.length > 0 && news.map((item,index)=>{return <NewsCard key={index} news={item} />})
