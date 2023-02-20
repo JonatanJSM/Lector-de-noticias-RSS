@@ -108,7 +108,7 @@ async function parserRRSFeed(urlss: string) {
       }
 
       categories  = Object.assign([], item.categories);
-      if("NYT > World News" === String(feedTitle)){
+      if(String(feedTitle).includes('NYT')){
         if(item.categories === undefined){
           category="News";
         }else{

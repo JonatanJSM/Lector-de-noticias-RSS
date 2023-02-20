@@ -8,6 +8,8 @@ export default function _proveedores(){
     const [errorMessage, setErrorMessage] = useState('');
     const [showAlertError, setShowAlertError] = React.useState(false);
     const [showAlertSuccess , setShowAlertSuccess] = React.useState(false);
+    const [isLoading, setIsLoading] = React.useState(false);
+    
     type FormValues = {
         input: {
           urls: string;

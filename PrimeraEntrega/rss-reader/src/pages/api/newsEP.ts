@@ -15,8 +15,10 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         let newsParsed: string[] =[];
         
         if(req.method === 'GET'){
-            const newsDb = await db.collection("news").find({}).toArray();
+            const newsDb:WebNews[] = await db.collection("news").find({}).toArray();
             newss = newsDb;
+            console.log(newss[7].newsItems);
+            
         }
 
         if(req.method === 'POST'){

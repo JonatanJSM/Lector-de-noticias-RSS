@@ -14,6 +14,8 @@ export default function _feed(){
           .then(async response=>{
             const data = await response.json();
             newsProviders.current = data.response;
+            console.log('data',data);
+            
             getNewsProvider();
             })
     },[])
@@ -25,6 +27,8 @@ export default function _feed(){
     function getListOfNews(arrayOfNews: News[],id:string){
         if(news.length<150){
             setNews([...news,...arrayOfNews]);
+            console.log(arrayOfNews);
+            
         }
     }    
 

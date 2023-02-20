@@ -45,13 +45,13 @@ const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
   }, []);
 
   const handleExpandClick = () => {
-    console.log(news?.title,'news');
+    console.log(news,'news');
     
     setExpanded(!expanded);
   };
 
   return (
-    <Card sx={{ maxWidth: 345,marginBottom:'10pt' }}>
+    <Card sx={{ maxWidth: 345,marginBottom:'10pt',boxShadow:4,borderRadius:'15px' }}>
       <CardHeader
         // avatar={
         //   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
@@ -78,12 +78,13 @@ const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton aria-label="add to favorites">
+        {/* <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
-        </IconButton>
+        </IconButton> */}
+        <button className='btn btn-primary' onClick={()=>{window.location.href=news.link}}>Ver noticia</button>
         <ExpandMore
           expand={expanded}
           onClick={handleExpandClick}
