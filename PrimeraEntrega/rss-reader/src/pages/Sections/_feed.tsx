@@ -8,7 +8,6 @@ export default function _feed(){
     const newsProviders = useRef<WebNews[]>([]);
     const [news, setNews] = useState<News[]>([]);
     const [filteredNews, setFilteredNews] = useState<News[]>([]);
-    const [timer, setTimer] = useState(0);
 
     useEffect(()=>{
         fetch('api/newsEP',{method: 'GET',headers: {
@@ -60,7 +59,7 @@ export default function _feed(){
 
     return(
         <div className="vstack gap-3 justify-content-center">
-            <h1>Feed: {news.length}, {filteredNews.length}</h1>
+            <h1>Feed</h1>
             <input id="search" type={'text'} className='form-control' style={{width:'300px'}}  onChange={(event:any)=>{debounceSearch(event)}} autoComplete={"off"}/>
             {
                filteredNews.length > 0 && filteredNews.map((item,index)=>{return <NewsCard key={index} news={item} />})
