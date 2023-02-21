@@ -4,10 +4,13 @@ import { Alert } from '@mui/material';
 import { useState } from 'react';
 import {WebNews} from 'public/interface/WebNews';
 import CircularProgress from '@mui/material/CircularProgress';
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 export default function _proveedores(){
     const [errorMessage, setErrorMessage] = useState('');
     const [showAlertError, setShowAlertError] = React.useState(false);
+    const [showAlertDeleted, setShowAlertDeleted] = React.useState(false);
     const [showAlertSuccess , setShowAlertSuccess] = React.useState(false);
     const [isLoading, setIsLoading] = React.useState(false);
 
@@ -75,22 +78,45 @@ export default function _proveedores(){
           })
     };
 
-    function deleteProvider(index:number){        
-        fetch('../api/newsEP', {
-            method: 'DELETE',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(getValues('input')[index])
-        }).then(async response => {
-            if (!response.ok) {
-                const data = await response.json();
-                setErrorMessage(data.response);
-                setShowAlertError(true);
-            }else{
-                setShowAlertSuccess(true);
-            }
-          })
+    function deleteProvider(index:number){
+        confirmAlert({
+            title: 'Eliminar URL',
+            message: '¿Eliminar URL?',
+            buttons: [
+              {
+                label: 'Sí',
+                onClick: () => eliminar(index)
+              },
+              {
+                label: 'No',
+                onClick: () => {}
+              }
+            ]
+          })        
+        
+    }
+
+    function eliminar(index:number){
+        
+        console.log("pase");
+                    fetch('../api/newsEP', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(getValues('input')[index])
+                }).then(async response => {
+                    if (!response.ok) {
+                        console.log("paaaase");
+                        const data = await response.json();
+                        setErrorMessage(data.response);
+                        setShowAlertError(true);
+                    }else{
+                        console.log("paseee");
+                        setShowAlertDeleted(true);
+                        remove(index);
+                    }
+                  })
     }
 
     return(
@@ -109,7 +135,7 @@ export default function _proveedores(){
                                         {...register(`input.${index}.urls`, { required: true, pattern: /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/ })} className="form-control"
                                         />
                                     </label>
-                                    <button className="btn btn-danger" style={{marginLeft:'5pt'}} type="button" onClick={() => {deleteProvider(index);remove(index); }}>
+                                    <button className="btn btn-danger" style={{marginLeft:'5pt'}} type="button" onClick={() => {deleteProvider(index); }}>
                                         Eliminar
                                     </button>
                                     <br/>
@@ -135,6 +161,9 @@ export default function _proveedores(){
                             )}
                         {showAlertSuccess && (
                             <Alert onClose={() => {setShowAlertSuccess(false)}} variant="filled" severity="success" style={{marginTop:'5pt'}}>Se guardaron los datos correctamente</Alert>
+                            )}
+                        {showAlertDeleted && (
+                            <Alert onClose={() => {setShowAlertDeleted(false)}} variant="filled" severity="warning" style={{marginTop:'5pt'}}>Se eliminaron los datos correctamente</Alert>
                             )}
                     </form>
                 </div>
