@@ -119,7 +119,9 @@ export default function _feed(){
         setOrderNews(type,"asc",news);
     };
 
-
+    const OrderDes = () => {
+        setOrderNews(type,"desc",news);
+    };
 
     function setOrderNews(atribute: string, order: string, arr:any){
         const copyOfDynos = [...arr]; // desc   //asc
@@ -154,10 +156,10 @@ export default function _feed(){
             <MenuItem value="category">Categoría</MenuItem>
             <MenuItem value="description">Descripción</MenuItem>
             </Select>
-            <IconButton aria-label="asc" color="secondary"  onClick={OrderAsc}>
+            <IconButton aria-label="asc" color="secondary" onClick={OrderAsc}>
             <ArrowUpwardIcon/>
             </IconButton>
-            <IconButton aria-label="des" color="secondary">
+            <IconButton aria-label="des" color="secondary" onClick={OrderDes}>
             <ArrowDownwardIcon/>
             </IconButton>
             
