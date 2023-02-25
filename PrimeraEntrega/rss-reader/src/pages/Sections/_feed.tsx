@@ -5,10 +5,10 @@ import  { News }  from 'public/interface/NewsInfo';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Button from '@mui/material/Button';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import IconButton from '@mui/material/IconButton';
+import { FormControl } from "@mui/material";
 
 export default function _feed(){
     var debounce = require('lodash.debounce');
@@ -140,29 +140,30 @@ export default function _feed(){
             <h1>Feed</h1>
             <input id="search" type={'text'} className='form-control' style={{width:'300px'}}  onChange={(event:any)=>{debounceSearch(event)}} autoComplete={"off"}/>
             <br></br>
-            <InputLabel id="demo-simple-select-autowidth-label">Buscar por tipo</InputLabel>
-            <Select
-            labelId="demo-simple-select-autowidth-label"
-            id="selectCat"
-            value={type}
-            onChange={handleChange}
-            autoWidth
-            label="Type"
-            >
-            <MenuItem value="">
-                <em>None</em>
-            </MenuItem>
-            <MenuItem value="title">Título</MenuItem>
-            <MenuItem value="category">Categoría</MenuItem>
-            <MenuItem value="description">Descripción</MenuItem>
-            </Select>
+                <InputLabel id="label">Ordenar por:</InputLabel>
+                <FormControl sx={{ m: 0.5, minWidth:80 }}>
+                    <InputLabel id="selectCategory">...</InputLabel>
+                <Select
+                labelId="selectCategory"
+                id="selectCat"
+                value={type}
+                onChange={handleChange}
+                label="type"
+                >
+                <MenuItem value="">
+                    <em>Ninguno</em>
+                </MenuItem>
+                <MenuItem value="title">Título</MenuItem>
+                <MenuItem value="category">Categoría</MenuItem>
+                <MenuItem value="description">Descripción</MenuItem>
+                </Select>
+             </FormControl>
             <IconButton aria-label="asc" color="secondary" onClick={OrderAsc}>
             <ArrowUpwardIcon/>
             </IconButton>
             <IconButton aria-label="des" color="secondary" onClick={OrderDes}>
             <ArrowDownwardIcon/>
             </IconButton>
-            
             <br></br><br></br><br></br>
             {
                filteredNews.length > 0 && filteredNews.map((item,index)=>{return <NewsCard key={index} news={item} />})
