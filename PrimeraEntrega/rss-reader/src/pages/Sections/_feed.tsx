@@ -4,7 +4,6 @@ import { WebNews } from 'public/interface/WebNews';
 import  { News }  from 'public/interface/NewsInfo';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Button from '@mui/material/Button';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
@@ -32,11 +31,8 @@ export default function _feed(){
         newsProviders.current.forEach((item,index)=>{getListOfNews(item.newsItems,index.toString())})
     }
 
-    function getListOfNews(arrayOfNews: News[],id:string){  
-       // let newss = [...news,...arrayOfNews];
-       // let filterdne = [...filteredNews,...arrayOfNews]; 
+    function getListOfNews(arrayOfNews: News[],id:string){   
         setNews(news=>[...news,...arrayOfNews].sort((a,b)=>{
-            //console.log(a.pubDate.substring(0,10));
             let aDate = new Date(a.pubDate);
             let bDate = new Date(b.pubDate);
             if (bDate > aDate) return 1;
@@ -50,8 +46,6 @@ export default function _feed(){
             if (bDate < aDate) return -1;
             return 0;
         }));       
-        // setNews(news=>[...news,...arrayOfNews]); 
-        // setFilteredNews(filteredNews=>[...filteredNews,...arrayOfNews]);
     }    
 
     function getSearchInput(event:any){
@@ -84,12 +78,53 @@ export default function _feed(){
         debounced();
     };
 
+    function createCompareFn<T extends Object>(
+        property: keyof T,
+        sort_order: "asc" | "desc"
+      ) {
+        const compareFn = (a: T, b: T) => {
+          const val1 = a[property];
+          const val2 = b[property];
+          const order = sort_order !== "desc" ? 1 : -1;
+          switch (typeof val1) {
+            case "number": {
+              const valb = val2 as number;
+              const result = val1 - valb;
+              return result * order;
+            }
+            case "string": {
+              const valb = val2 as string;
+              const result = val1.localeCompare(valb);
+              return result * order;
+            }
+            // add other cases like boolean, etc.
+            default:
+              return 0;
+          }
+        };
+        return compareFn;
+      }
+
     const [age, setAge] = useState('');
 
     const handleChange = (event: SelectChangeEvent) => {
         setAge(event.target.value);
-        console.log(event.target.value);
+        var x = (event.target.value.length);
+        console.log("?"+x)
+        if(x == 0){
+            setFilteredNews(news);
+            console.log("?");}
+        else {            
+            setOrderNews(String(event.target.value.length),true, news);
+        }
     };
+
+    function setOrderNews(atribute:String, order: Boolean, arr:any){
+        const copyOfDynos = [...arr]; // desc   //asc
+        copyOfDynos.sort(createCompareFn("title","asc"));
+        setFilteredNews(copyOfDynos);
+    }
+    
 
     return(
         <div className="vstack gap-3 justify-content-center">
