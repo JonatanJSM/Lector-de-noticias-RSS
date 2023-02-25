@@ -141,22 +141,20 @@ export default function _feed(){
             <input id="search" type={'text'} placeholder="Buscar..." className='form-control' style={{width:'300px'}}  onChange={(event:any)=>{debounceSearch(event)}} autoComplete={"off"}/>
             <br></br>
                 <InputLabel id="label">Ordenar por:</InputLabel>
-                <FormControl sx={{ m: 0.5, minWidth:80 }}>
-                    <InputLabel id="selectCategory">...</InputLabel>
-                <Select
-                labelId="selectCategory"
-                id="selectCat"
-                value={type}
-                onChange={handleChange}
-                label="type"
-                >
-                <MenuItem value="">
-                    <em>Ninguno</em>
-                </MenuItem>
-                <MenuItem value="title">Título</MenuItem>
-                <MenuItem value="category">Categoría</MenuItem>
-                <MenuItem value="description">Descripción</MenuItem>
-                </Select>
+                <FormControl sx={{ m: 1, minWidth: 120 }}>
+                    <Select
+                    value={type}
+                    onChange={handleChange}
+                    displayEmpty
+                    inputProps={{ 'aria-label': 'Without label' }}
+                    >
+                        <MenuItem value="">
+                            <em>Ninguno</em>
+                        </MenuItem>
+                        <MenuItem value="title">Título</MenuItem>
+                        <MenuItem value="category">Categoría</MenuItem>
+                        <MenuItem value="description">Descripción</MenuItem>
+                    </Select>
              </FormControl>
             <IconButton aria-label="asc" color="secondary" onClick={OrderAsc}>
             <ArrowUpwardIcon/>
