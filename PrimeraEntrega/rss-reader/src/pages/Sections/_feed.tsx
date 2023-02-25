@@ -1,14 +1,14 @@
-import { useEffect, useRef, useState } from "react"
+import { ButtonHTMLAttributes, useEffect, useRef, useState } from "react"
 import NewsCard from "../../abstractComponents/NewsCard"
 import { WebNews } from 'public/interface/WebNews';
 import  { News }  from 'public/interface/NewsInfo';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
-import Button from '@mui/material/Button';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import IconButton from '@mui/material/IconButton';
+import { FormControl } from "@mui/material";
 
 export default function _feed(){
     var debounce = require('lodash.debounce');
@@ -67,8 +67,6 @@ export default function _feed(){
             });
           });
     }
-    
-    
 
     const debounceSearch = (event:any) => {
         const debounced = debounce(() => {
@@ -105,57 +103,67 @@ export default function _feed(){
         return compareFn;
       }
 
-    const [age, setAge] = useState('');
+    const [type, setType] = useState('');
 
     const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value);
+        setType(event.target.value);
         var x = (event.target.value.length);
-        console.log("?"+x)
         if(x == 0){
             setFilteredNews(news);
-            console.log("?");}
-        else {            
-            setOrderNews(String(event.target.value.length),true, news);
+        } else {            
+            setOrderNews(String(event.target.value),"asc", news);
         }
-        console.log(event.target.value);
     };
 
-    function setOrderNews(atribute:String, order: Boolean, arr:any){
+    const OrderAsc = () => {
+        setOrderNews(type,"asc",news);
+    };
+
+    const OrderDes = () => {
+        setOrderNews(type,"desc",news);
+    };
+
+    function setOrderNews(atribute: string, order: string, arr:any){
         const copyOfDynos = [...arr]; // desc   //asc
-        copyOfDynos.sort(createCompareFn("title","asc"));
+        if(order == "asc"){
+            copyOfDynos.sort(createCompareFn(atribute, "asc"));
+        }else{
+            copyOfDynos.sort(createCompareFn(atribute, "desc")); 
+        }        
         setFilteredNews(copyOfDynos);
     }
-    
+
 
     return(
         <div className="vstack gap-3 justify-content-center">
             <center>
             <h1>Feed</h1>
-            <input id="search" type={'text'} className='form-control' style={{width:'300px'}}  onChange={(event:any)=>{debounceSearch(event)}} autoComplete={"off"}/>
+            <input id="search" type={'text'} placeholder="Buscar..." className='form-control' style={{width:'300px'}}  onChange={(event:any)=>{debounceSearch(event)}} autoComplete={"off"}/>
             <br></br>
-            <InputLabel id="demo-simple-select-autowidth-label">Buscar por tipo</InputLabel>
-            <Select
-            labelId="demo-simple-select-autowidth-label"
-            id="demo-simple-select-autowidth"
-            value={age}
-            onChange={handleChange}
-            autoWidth
-            label="Type"
-            >
-            <MenuItem value="">
-                <em>None</em>
-            </MenuItem>
-            <MenuItem value="title">Título</MenuItem>
-            <MenuItem value="category">Categoría</MenuItem>
-            <MenuItem value="description">Descripción</MenuItem>
-            </Select>
-            <IconButton aria-label="asc" color="secondary"  onClick={(event:any)=>{console.log("asc")}}>
+                <InputLabel id="label">Ordenar por:</InputLabel>
+                <FormControl sx={{ m: 0.5, minWidth:80 }}>
+                    <InputLabel id="selectCategory">...</InputLabel>
+                <Select
+                labelId="selectCategory"
+                id="selectCat"
+                value={type}
+                onChange={handleChange}
+                label="type"
+                >
+                <MenuItem value="">
+                    <em>Ninguno</em>
+                </MenuItem>
+                <MenuItem value="title">Título</MenuItem>
+                <MenuItem value="category">Categoría</MenuItem>
+                <MenuItem value="description">Descripción</MenuItem>
+                </Select>
+             </FormControl>
+            <IconButton aria-label="asc" color="secondary" onClick={OrderAsc}>
             <ArrowUpwardIcon/>
             </IconButton>
-            <IconButton aria-label="des" color="secondary" onClick={(event:any)=>{console.log("des")}}>
+            <IconButton aria-label="des" color="secondary" onClick={OrderDes}>
             <ArrowDownwardIcon/>
             </IconButton>
-            
             <br></br><br></br><br></br>
             {
                filteredNews.length > 0 && filteredNews.map((item,index)=>{return <NewsCard key={index} news={item} />})
