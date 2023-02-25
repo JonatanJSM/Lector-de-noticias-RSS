@@ -138,7 +138,7 @@ export default function _feed(){
         <div className="vstack gap-3 justify-content-center">
             <center>
             <h1>Feed</h1>
-            <input id="search" type={'text'} className='form-control' style={{width:'300px'}}  onChange={(event:any)=>{debounceSearch(event)}} autoComplete={"off"}/>
+            <input id="search" type={'text'} placeholder="Buscar..." className='form-control' style={{width:'300px'}}  onChange={(event:any)=>{debounceSearch(event)}} autoComplete={"off"}/>
             <br></br>
                 <InputLabel id="label">Ordenar por:</InputLabel>
                 <FormControl sx={{ m: 0.5, minWidth:80 }}>
