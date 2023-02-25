@@ -1,7 +1,14 @@
-import { useEffect, useRef, useState } from "react"
+import { ButtonHTMLAttributes, useEffect, useRef, useState } from "react"
 import NewsCard from "../../abstractComponents/NewsCard"
 import { WebNews } from 'public/interface/WebNews';
 import  { News }  from 'public/interface/NewsInfo';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Button from '@mui/material/Button';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import IconButton from '@mui/material/IconButton';
 
 export default function _feed(){
     var debounce = require('lodash.debounce');
@@ -24,11 +31,8 @@ export default function _feed(){
         newsProviders.current.forEach((item,index)=>{getListOfNews(item.newsItems,index.toString())})
     }
 
-    function getListOfNews(arrayOfNews: News[],id:string){  
-       // let newss = [...news,...arrayOfNews];
-       // let filterdne = [...filteredNews,...arrayOfNews]; 
+    function getListOfNews(arrayOfNews: News[],id:string){   
         setNews(news=>[...news,...arrayOfNews].sort((a,b)=>{
-            //console.log(a.pubDate.substring(0,10));
             let aDate = new Date(a.pubDate);
             let bDate = new Date(b.pubDate);
             if (bDate > aDate) return 1;
@@ -42,8 +46,6 @@ export default function _feed(){
             if (bDate < aDate) return -1;
             return 0;
         }));       
-        // setNews(news=>[...news,...arrayOfNews]); 
-        // setFilteredNews(filteredNews=>[...filteredNews,...arrayOfNews]);
     }    
 
     function getSearchInput(event:any){
@@ -74,13 +76,98 @@ export default function _feed(){
         debounced();
     };
 
+    function createCompareFn<T extends Object>(
+        property: keyof T,
+        sort_order: "asc" | "desc"
+      ) {
+        const compareFn = (a: T, b: T) => {
+          const val1 = a[property];
+          const val2 = b[property];
+          const order = sort_order !== "desc" ? 1 : -1;
+          switch (typeof val1) {
+            case "number": {
+              const valb = val2 as number;
+              const result = val1 - valb;
+              return result * order;
+            }
+            case "string": {
+              const valb = val2 as string;
+              const result = val1.localeCompare(valb);
+              return result * order;
+            }
+            // add other cases like boolean, etc.
+            default:
+              return 0;
+          }
+        };
+        return compareFn;
+      }
+
+    const [type, setType] = useState('');
+
+    const handleChange = (event: SelectChangeEvent) => {
+        setType(event.target.value);
+        var x = (event.target.value.length);
+        if(x == 0){
+            setFilteredNews(news);
+        } else {            
+            setOrderNews(String(event.target.value),"asc", news);
+        }
+    };
+
+    const OrderAsc = () => {
+        setOrderNews(type,"asc",news);
+    };
+
+    const OrderDes = () => {
+        setOrderNews(type,"desc",news);
+    };
+
+    function setOrderNews(atribute: string, order: string, arr:any){
+        const copyOfDynos = [...arr]; // desc   //asc
+        if(order == "asc"){
+            copyOfDynos.sort(createCompareFn(atribute, "asc"));
+        }else{
+            copyOfDynos.sort(createCompareFn(atribute, "desc")); 
+        }        
+        setFilteredNews(copyOfDynos);
+    }
+
+
     return(
         <div className="vstack gap-3 justify-content-center">
+            <center>
             <h1>Feed</h1>
             <input id="search" type={'text'} className='form-control' style={{width:'300px'}}  onChange={(event:any)=>{debounceSearch(event)}} autoComplete={"off"}/>
+            <br></br>
+            <InputLabel id="demo-simple-select-autowidth-label">Buscar por tipo</InputLabel>
+            <Select
+            labelId="demo-simple-select-autowidth-label"
+            id="selectCat"
+            value={type}
+            onChange={handleChange}
+            autoWidth
+            label="Type"
+            >
+            <MenuItem value="">
+                <em>None</em>
+            </MenuItem>
+            <MenuItem value="title">Título</MenuItem>
+            <MenuItem value="category">Categoría</MenuItem>
+            <MenuItem value="description">Descripción</MenuItem>
+            </Select>
+            <IconButton aria-label="asc" color="secondary" onClick={OrderAsc}>
+            <ArrowUpwardIcon/>
+            </IconButton>
+            <IconButton aria-label="des" color="secondary" onClick={OrderDes}>
+            <ArrowDownwardIcon/>
+            </IconButton>
+            
+            <br></br><br></br><br></br>
             {
                filteredNews.length > 0 && filteredNews.map((item,index)=>{return <NewsCard key={index} news={item} />})
             }
+            </center>
         </div>
     )
 }
