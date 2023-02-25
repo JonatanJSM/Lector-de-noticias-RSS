@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { ButtonHTMLAttributes, useEffect, useRef, useState } from "react"
 import NewsCard from "../../abstractComponents/NewsCard"
 import { WebNews } from 'public/interface/WebNews';
 import  { News }  from 'public/interface/NewsInfo';
@@ -67,8 +67,6 @@ export default function _feed(){
             });
           });
     }
-    
-    
 
     const debounceSearch = (event:any) => {
         const debounced = debounce(() => {
@@ -105,19 +103,23 @@ export default function _feed(){
         return compareFn;
       }
 
-    const [age, setAge] = useState('');
+    const [type, setType] = useState('');
 
     const handleChange = (event: SelectChangeEvent) => {
-        setAge(event.target.value);
+        setType(event.target.value);
         var x = (event.target.value.length);
-        console.log("?"+x)
         if(x == 0){
             setFilteredNews(news);
-            console.log("?");}
-        else {            
+        } else {            
             setOrderNews(String(event.target.value),"asc", news);
         }
     };
+
+    const OrderAsc = () => {
+        setOrderNews(type,"asc",news);
+    };
+
+
 
     function setOrderNews(atribute: string, order: string, arr:any){
         const copyOfDynos = [...arr]; // desc   //asc
@@ -128,7 +130,7 @@ export default function _feed(){
         }        
         setFilteredNews(copyOfDynos);
     }
-    
+
 
     return(
         <div className="vstack gap-3 justify-content-center">
@@ -139,8 +141,8 @@ export default function _feed(){
             <InputLabel id="demo-simple-select-autowidth-label">Buscar por tipo</InputLabel>
             <Select
             labelId="demo-simple-select-autowidth-label"
-            id="demo-simple-select-autowidth"
-            value={age}
+            id="selectCat"
+            value={type}
             onChange={handleChange}
             autoWidth
             label="Type"
@@ -152,10 +154,10 @@ export default function _feed(){
             <MenuItem value="category">Categoría</MenuItem>
             <MenuItem value="description">Descripción</MenuItem>
             </Select>
-            <IconButton aria-label="asc" color="secondary"  onClick={(event:any)=>{console.log("asc")}}>
+            <IconButton aria-label="asc" color="secondary"  onClick={OrderAsc}>
             <ArrowUpwardIcon/>
             </IconButton>
-            <IconButton aria-label="des" color="secondary" onClick={(event:any)=>{console.log("des")}}>
+            <IconButton aria-label="des" color="secondary">
             <ArrowDownwardIcon/>
             </IconButton>
             
