@@ -115,13 +115,17 @@ export default function _feed(){
             setFilteredNews(news);
             console.log("?");}
         else {            
-            setOrderNews(String(event.target.value.length),true, news);
+            setOrderNews(String(event.target.value),"asc", news);
         }
     };
 
-    function setOrderNews(atribute:String, order: Boolean, arr:any){
+    function setOrderNews(atribute: string, order: string, arr:any){
         const copyOfDynos = [...arr]; // desc   //asc
-        copyOfDynos.sort(createCompareFn("title","asc"));
+        if(order == "asc"){
+            copyOfDynos.sort(createCompareFn(atribute, "asc"));
+        }else{
+            copyOfDynos.sort(createCompareFn(atribute, "desc")); 
+        }        
         setFilteredNews(copyOfDynos);
     }
     
