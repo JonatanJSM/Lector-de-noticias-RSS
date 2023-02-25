@@ -5,6 +5,10 @@ import  { News }  from 'public/interface/NewsInfo';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Button from '@mui/material/Button';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
+import IconButton from '@mui/material/IconButton';
 
 export default function _feed(){
     var debounce = require('lodash.debounce');
@@ -63,6 +67,8 @@ export default function _feed(){
             });
           });
     }
+    
+    
 
     const debounceSearch = (event:any) => {
         const debounced = debounce(() => {
@@ -111,6 +117,7 @@ export default function _feed(){
         else {            
             setOrderNews(String(event.target.value.length),true, news);
         }
+        console.log(event.target.value);
     };
 
     function setOrderNews(atribute:String, order: Boolean, arr:any){
@@ -133,7 +140,7 @@ export default function _feed(){
             value={age}
             onChange={handleChange}
             autoWidth
-            label="Age"
+            label="Type"
             >
             <MenuItem value="">
                 <em>None</em>
@@ -142,6 +149,13 @@ export default function _feed(){
             <MenuItem value="category">Categoría</MenuItem>
             <MenuItem value="description">Descripción</MenuItem>
             </Select>
+            <IconButton aria-label="asc" color="secondary"  onClick={(event:any)=>{console.log("asc")}}>
+            <ArrowUpwardIcon/>
+            </IconButton>
+            <IconButton aria-label="des" color="secondary" onClick={(event:any)=>{console.log("des")}}>
+            <ArrowDownwardIcon/>
+            </IconButton>
+            
             <br></br><br></br><br></br>
             {
                filteredNews.length > 0 && filteredNews.map((item,index)=>{return <NewsCard key={index} news={item} />})
