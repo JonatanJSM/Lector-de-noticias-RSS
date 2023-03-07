@@ -156,10 +156,10 @@ export default function _feed(){
                         <MenuItem value="description">Descripción</MenuItem>
                     </Select>
              </FormControl>
-            <IconButton aria-label="asc" color="secondary" onClick={OrderAsc}>
+            <IconButton aria-label="asc" color="inherit" onClick={OrderAsc}>
             <ArrowUpwardIcon/>
             </IconButton>
-            <IconButton aria-label="des" color="secondary" onClick={OrderDes}>
+            <IconButton aria-label="des" color="inherit" onClick={OrderDes}>
             <ArrowDownwardIcon/>
             </IconButton>
             <br></br><br></br><br></br>
