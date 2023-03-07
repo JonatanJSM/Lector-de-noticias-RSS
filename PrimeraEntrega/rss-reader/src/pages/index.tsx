@@ -76,7 +76,7 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main className={styles.main}>
+      <main className={styles.main} style={{background: 'url(\'./feed-background.jpg\')'}}>
         <span style={{display:'flex'}}>
           <img src="./RssIcon.png" alt="" width={'30px'} height={'30px'} />
           <p style={{marginTop:'5px', fontFamily:'Roboto,Helvetica,Arial,sans-serif'}}>¡Entérate!</p>
