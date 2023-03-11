@@ -154,7 +154,7 @@ export default function _proveedores(){
                                     });
                                 }}
                             >Agregar</button> &nbsp;
-                            <button type="submit" className="btn btn-primary" disabled={isLoading}>Enviar</button>
+                            <button type="submit" className="btn btn-primary" disabled={isLoading}>Actualizar</button>
                             {isLoading && <span style={{marginLeft:'5pt'}}> <CircularProgress color="secondary" size='2rem' style={{paddingTop:'1pt'}}/> </span>}
                         {showAlertError && (
                             <Alert onClose={() => {setShowAlertError(false)}} variant="filled" severity="error" style={{marginTop:'5pt'}}>{`La url ${errorMessage} provocó un error`}</Alert>
