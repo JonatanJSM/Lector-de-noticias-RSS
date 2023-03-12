@@ -49,11 +49,6 @@ export default function _proveedores(){
         control,
         rules: {
             required: "Por favor, agregue al menos un input"
-            // validate: (url) =>{
-            //     // const urlRegex = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
-            //     // const url = "https://www.example.com";
-            //     // console.log(urlRegex.test(url)); // outputs: true
-            // }
           }
         
     })
@@ -97,8 +92,6 @@ export default function _proveedores(){
     }
 
     function eliminar(index:number){
-        
-        console.log("pase");
                     fetch('../api/newsEP', {
                     method: 'DELETE',
                     headers: {
@@ -107,12 +100,10 @@ export default function _proveedores(){
                     body: JSON.stringify(getValues('input')[index])
                 }).then(async response => {
                     if (!response.ok) {
-                        console.log("paaaase");
                         const data = await response.json();
                         setErrorMessage(data.response);
                         setShowAlertError(true);
                     }else{
-                        console.log("paseee");
                         setShowAlertDeleted(true);
                         remove(index);
                     }
