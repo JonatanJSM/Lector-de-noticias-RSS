@@ -1,38 +1,9 @@
 import Parser from "rss-parser";
-import {News} from "../interface/NewsInfo"
-import { WebNews } from "public/interface/WebNews";
 import sanitizeHtml from 'sanitize-html';
+import {CardProps} from "public/classes/CardProps";
+import {web} from "public/classes/web";
 
-class CardProps implements News {
-    title: string;
-    description: string;
-    link: string;
-    category: string;
-    image: string;
-    pubDate: string;
-
-  public constructor(title: string, desdescription: string, link: string, category: string, image: string, pubDate: string) {
-    this.title = title;
-    this.description = desdescription;
-    this.link = link;
-    this.image = image
-    this.category = category;
-    this.pubDate = pubDate;
-  }
-}
-
-class web implements WebNews{
-  title: string;
-  urlWebPage: string;
-  newsItems: CardProps[];
-  
-  public constructor(title: string, newsItems: CardProps[], urlWebPage: string) {
-    this.title = title;
-    this.urlWebPage = urlWebPage;
-    this.newsItems = newsItems;
-  }
-}
-
+const photoCat: string = "https://cdn2.thecatapi.com/images/7e7.jpg";
 type NYT  = {
   _: number;
   '$': string;
@@ -51,19 +22,16 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
 });
   
 async function parserRRSFeed(urlss: string) {
-    let photoCat: string = "https://cdn2.thecatapi.com/images/7e7.jpg";
     let phtosNews: string;
     const arrayNews: CardProps[] = [];
     let feed:any;
     try {
        feed = await parser.parseURL(urlss);
     } catch (error) {
-      return "error"
+      return "error";
     }
-    let feedTitle = feed.title;
+    let feedTitle = String(feed.title);
     phtosNews = feed.image['url'];
-    console.log(feed.image);
-    
 
     let i = 0;
     feed.items.forEach((item:any) => {
@@ -78,17 +46,18 @@ async function parserRRSFeed(urlss: string) {
       link = String(item.link);
       date = String(item.isoDate);
 
-      if(item.description === undefined){
+      let auxItemDescription = item.description;
+      if(auxItemDescription === undefined){
           description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec molestie ultrices dolor vel accumsan.";
       }else{
-        description = sanitizeHtml(item.description);
+        description = sanitizeHtml(auxItemDescription);
         if(description === ""){
           description = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec molestie ultrices dolor vel accumsan.";
         }
       }
 
       categories  = Object.assign([], item.categories);
-      if(String(feedTitle).includes('NYT')){
+      if(feedTitle.includes('NYT')){
         if(item.categories === undefined){
           category="News";
         }else{
@@ -98,7 +67,7 @@ async function parserRRSFeed(urlss: string) {
         }
       }else{
         if(categories[0] === undefined){
-            category="News";
+          category = "News";
         }else{
           category = String(categories[0]);
         }
