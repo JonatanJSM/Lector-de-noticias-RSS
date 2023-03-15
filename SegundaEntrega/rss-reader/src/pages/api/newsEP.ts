@@ -24,9 +24,7 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
             let arrayURL = JSON.parse(aux);
             for(let i = 0; i<arrayURL.input.length; i++){
                 let feedParsed = await parserRSS(arrayURL.input[i].urls);
-                //console.log(JSON.parse(feedParsed));
                 if(feedParsed == "error") throw new Error(arrayURL.input[i].urls);
-                //await db.collection("news").insertOne(JSON.parse((feedParsed)));
                 newsParsed[i] = feedParsed;
             }
             
@@ -34,11 +32,9 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
                 let auxURLPage = JSON.parse(newsParsed[i]);
                 const foundItem = await db.collection("news").updateOne({urlWebPage: auxURLPage.urlWebPage},{$set: JSON.parse((newsParsed[i]))});
                 if(foundItem.matchedCount === 0){
-                    //console.log(JSON.parse((newsParsed[i])));
                     await db.collection("news").insertOne(JSON.parse((newsParsed[i])));
                 }
             }
-            
         }
 
         if(req.method === 'DELETE'){

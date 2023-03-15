@@ -72,7 +72,6 @@ export default function _feed(){
         const debounced = debounce(() => {
             getSearchInput(event);
         }, 800);
-        
         debounced();
     };
 
@@ -95,7 +94,6 @@ export default function _feed(){
               const result = val1.localeCompare(valb);
               return result * order;
             }
-            // add other cases like boolean, etc.
             default:
               return 0;
           }
@@ -124,7 +122,7 @@ export default function _feed(){
     };
 
     function setOrderNews(atribute: string, order: string, arr:any){
-        const copyOfDynos = [...arr]; // desc   //asc
+        const copyOfDynos = [...arr]; 
         if(order == "asc"){
             copyOfDynos.sort(createCompareFn(atribute, "asc"));
         }else{
@@ -132,7 +130,6 @@ export default function _feed(){
         }        
         setFilteredNews(copyOfDynos);
     }
-
 
     return(
         <div className="vstack gap-3 justify-content-center">
