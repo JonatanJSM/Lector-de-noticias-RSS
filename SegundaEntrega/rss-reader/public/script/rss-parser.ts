@@ -24,7 +24,8 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
 });
   
 async function parserRRSFeed(urlss: string) {
-    fs.readdir('public/imgNews/',(err,files)=>{
+  //   public/imgNews/
+    fs.readdir('/imgNews/',(err,files)=>{
       if (err) {
         console.error(err);
         return "error";
