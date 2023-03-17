@@ -50,23 +50,13 @@ const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
   return (
     <Card sx={{ maxWidth: 345,marginBottom:'10pt',boxShadow:4,borderRadius:'15px' }}>
       <CardHeader
-        // avatar={
-        //   <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-        //     R
-        //   </Avatar>
-        // }
-        // action={
-        //   <IconButton aria-label="settings">
-        //     <MoreVertIcon />
-        //   </IconButton>
-        // }
         title={news?.title}
         subheader={news?.pubDate.substring(0,10)}
       />
       <CardMedia
         component="img"
         height="194"
-        image={news.image}
+        image={"/imgNews/"+news.image}
         alt="Paella dish"
       />
       <CardContent>
@@ -75,12 +65,6 @@ const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
-        {/* <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-        <IconButton aria-label="share">
-          <ShareIcon />
-        </IconButton> */}
         <button className='btn btn-primary' onClick={()=>{window.location.href=news.link}}>Ver noticia</button>
         <ExpandMore
           expand={expanded}

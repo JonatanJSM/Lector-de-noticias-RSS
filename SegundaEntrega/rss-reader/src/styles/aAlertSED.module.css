@@ -1,0 +1,39 @@
+.contenedorPrincipal, .precaucion{
+    margin: 40px 0;
+    display: flex;
+    font-size: 12pt;
+    justify-content: space-between;
+    background-color: rgb(48,124,52);
+    border-radius: 0.5em;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.mensajeAlert{
+    margin: 10px 30px;
+    align-items: center;
+}
+
+.boton{
+    background-color:transparent;
+    border-style: none;
+    border-radius: 20%;
+    width: 40px;
+    margin: 0 30px;
+}
+
+.precaucion{
+    background-color: rgb(248,124,4);
+}
+
+@media screen and (max-width: 300px) {
+    .contenedorPrincipal, .precaucion, .mensajeAlert{
+        margin: 5px 5px;
+        box-sizing: border-box;
+    }
+
+    .boton{
+        margin: 0 5px;
+    }
+    
+  }

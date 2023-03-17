@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
-import { useFieldArray, useForm } from "react-hook-form";
-import { Alert } from '@mui/material';
 import { useState } from 'react';
+import { useFieldArray, useForm } from "react-hook-form";
 import {WebNews} from 'public/interface/WebNews';
 import CircularProgress from '@mui/material/CircularProgress';
 import { confirmAlert } from 'react-confirm-alert'; 
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import AlertSED from "src/abstractComponents/AlertSuccess";
 
 export default function _proveedores(){
     const [errorMessage, setErrorMessage] = useState('');
@@ -49,13 +49,7 @@ export default function _proveedores(){
         control,
         rules: {
             required: "Por favor, agregue al menos un input"
-            // validate: (url) =>{
-            //     // const urlRegex = new RegExp(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/);
-            //     // const url = "https://www.example.com";
-            //     // console.log(urlRegex.test(url)); // outputs: true
-            // }
           }
-        
     })
 
     const onSubmit = (data:any) => {
@@ -97,8 +91,6 @@ export default function _proveedores(){
     }
 
     function eliminar(index:number){
-        
-        console.log("pase");
                     fetch('../api/newsEP', {
                     method: 'DELETE',
                     headers: {
@@ -107,12 +99,10 @@ export default function _proveedores(){
                     body: JSON.stringify(getValues('input')[index])
                 }).then(async response => {
                     if (!response.ok) {
-                        console.log("paaaase");
                         const data = await response.json();
                         setErrorMessage(data.response);
                         setShowAlertError(true);
                     }else{
-                        console.log("paseee");
                         setShowAlertDeleted(true);
                         remove(index);
                     }
@@ -157,13 +147,13 @@ export default function _proveedores(){
                             <button type="submit" className="btn btn-primary" disabled={isLoading}>Actualizar</button>
                             {isLoading && <span style={{marginLeft:'5pt'}}> <CircularProgress color="secondary" size='2rem' style={{paddingTop:'1pt'}}/> </span>}
                         {showAlertError && (
-                            <Alert onClose={() => {setShowAlertError(false)}} variant="filled" severity="error" style={{marginTop:'5pt'}}>{`La url ${errorMessage} provocó un error`}</Alert>
+                            <AlertSED onClose={() => { setShowAlertError(false); } } action={false} aviso={`La url ${errorMessage} provocó un error`}></AlertSED>
                             )}
                         {showAlertSuccess && (
-                            <Alert onClose={() => {setShowAlertSuccess(false)}} variant="filled" severity="success" style={{marginTop:'5pt'}}>Se guardaron los datos correctamente</Alert>
+                            <AlertSED onClose={() => { setShowAlertSuccess(false); } } action={true} aviso="Se guardaron los datos correctamente"></AlertSED> 
                             )}
                         {showAlertDeleted && (
-                            <Alert onClose={() => {setShowAlertDeleted(false)}} variant="filled" severity="warning" style={{marginTop:'5pt'}}>Se eliminaron los datos correctamente</Alert>
+                            <AlertSED onClose={() => { setShowAlertDeleted(false); } } action={false} aviso="Se eliminaron los datos correctamente"></AlertSED> 
                             )}
                     </form>
                 </div>
