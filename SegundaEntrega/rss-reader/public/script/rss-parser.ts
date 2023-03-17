@@ -2,8 +2,10 @@ import Parser from "rss-parser";
 import sanitizeHtml from 'sanitize-html';
 import {CardProps} from "public/classes/CardProps";
 import {web} from "public/classes/web";
+import * as fs from 'fs';
 
-const photoCat: string = "https://cdn2.thecatapi.com/images/7e7.jpg";
+const photoCat: string = "newsDefault.svg";
+let directoryFiles: string[] = [];
 type NYT  = {
   _: number;
   '$': string;
@@ -22,7 +24,15 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
 });
   
 async function parserRRSFeed(urlss: string) {
-    let phtosNews: string;
+    fs.readdir('public/imgNews/',(err,files)=>{
+      if (err) {
+        console.error(err);
+        return "error";
+      }
+      directoryFiles = files;
+    });
+
+    let photosNews: string;
     const arrayNews: CardProps[] = [];
     let feed:any;
     try {
@@ -30,9 +40,12 @@ async function parserRRSFeed(urlss: string) {
     } catch (error) {
       return "error";
     }
-    let feedTitle = String(feed.title);
-    phtosNews = feed.image['url'];
 
+    let auxNamePhoto = urlss.replace(/[:/,;<>]/g, '');
+    auxNamePhoto += ".gif";
+    directoryFiles.includes(auxNamePhoto)?photosNews=auxNamePhoto:"";
+
+    let feedTitle = String(feed.title);
     let i = 0;
     feed.items.forEach((item:any) => {
       let tittle: string;
@@ -58,6 +71,7 @@ async function parserRRSFeed(urlss: string) {
 
       categories  = Object.assign([], item.categories);
       if(feedTitle.includes('NYT')){
+        photosNews = "NYT.gif";
         if(item.categories === undefined){
           category="News";
         }else{
@@ -73,14 +87,13 @@ async function parserRRSFeed(urlss: string) {
         }
       }
 
-      if(phtosNews === undefined){
+      if(photosNews === undefined){
         arrayNews[i]=(new CardProps(tittle, description, link, category, photoCat, date));
       }else{
-        arrayNews[i]=(new CardProps(tittle, description, link, category, phtosNews, date));
+        arrayNews[i]=(new CardProps(tittle, description, link, category, photosNews, date));
       }
         i++;
     });
-
     var objWebNews = new web(String(feedTitle), arrayNews, urlss);
     var arrayJSON = JSON.stringify(objWebNews);
     return arrayJSON;

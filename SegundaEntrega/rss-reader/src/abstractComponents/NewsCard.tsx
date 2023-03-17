@@ -56,7 +56,7 @@ const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
       <CardMedia
         component="img"
         height="194"
-        image={news.image}
+        image={"/imgNews/"+news.image}
         alt="Paella dish"
       />
       <CardContent>
