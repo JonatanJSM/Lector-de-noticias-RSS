@@ -3,6 +3,7 @@ import sanitizeHtml from 'sanitize-html';
 import {CardProps} from "public/classes/CardProps";
 import {web} from "public/classes/web";
 import * as fs from 'fs';
+import path from 'path';
 
 const photoCat: string = "newsDefault.svg";
 let directoryFiles: string[] = [];
@@ -25,7 +26,8 @@ const parser: Parser<CustomFeed, CustomItem> = new Parser({
   
 async function parserRRSFeed(urlss: string) {
   //   public/imgNews/
-    fs.readdir('/imgNews/',(err,files)=>{
+  const dir = path.resolve('./public', "imgNews");
+    fs.readdir(dir,(err,files)=>{
       if (err) {
         console.error(err);
         return "error";
