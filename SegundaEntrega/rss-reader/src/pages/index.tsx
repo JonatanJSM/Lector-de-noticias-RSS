@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Suspense} from 'react';
 import Head from 'next/head'
 import "bootstrap/dist/css/bootstrap.min.css";
 import styles from '@/styles/Home.module.css'
@@ -18,7 +18,7 @@ function a11yProps(index: number) {
   };
 }
 
-export default function Home() {
+export default function Home({data}:any) {
   const [value, setValue] = React.useState(0);
   useEffect(()=>{ })
 
@@ -42,18 +42,34 @@ export default function Home() {
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider',width:'90vw' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab label="Feed" {...a11yProps(0)} />
-              <Tab label="Proveedores" {...a11yProps(1)} />
+              <Tab label="Proveedores" {...a11yProps(0)} />
+              <Tab label="Feed" {...a11yProps(1)} />
             </Tabs>
           </Box>
-          <TabPanel value={value} index={0} >
-            {_feed()}
-          </TabPanel>
-          <TabPanel value={value} index={1}>
+          <TabPanel value={value} index={0}>
             {_proveedores()}
+          </TabPanel>
+          <TabPanel value={value} index={1} >
+            <Suspense fallback={<div>Cargando...</div>}>
+              {_feed(data)}
+            </Suspense>
           </TabPanel>
         </Box>
       </main>
     </>
   )
+}
+
+//get service side props to get the data from api/newsEP
+export async function getServerSideProps(context:any) {
+  let url = '';
+  url = process.env.NODE_ENV === 'development' ? 'http://localhost:4200/' : context.req.headers.host;
+  const res = await fetch(`${url}/api/newsEP`)
+  const data = await res.json();
+  
+  return {
+    props: {
+      data: data.response
+    }
+  }
 }

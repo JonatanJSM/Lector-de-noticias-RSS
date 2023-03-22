@@ -10,21 +10,23 @@ import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 import IconButton from '@mui/material/IconButton';
 import { FormControl } from "@mui/material";
 
-export default function _feed(){
+export default function _feed(data?:any){
     var debounce = require('lodash.debounce');
     const newsProviders = useRef<WebNews[]>([]);
     const [news, setNews] = useState<News[]>([]);
     const [filteredNews, setFilteredNews] = useState<News[]>([]);
 
     useEffect(()=>{
-        fetch('api/newsEP',{method: 'GET',headers: {
-            'Content-Type': 'application/json',
-          }})
-          .then(async response=>{
-            const data = await response.json();
-            newsProviders.current = data.response;            
-            getNewsProvider();
-            })
+        // fetch('api/newsEP',{method: 'GET',headers: {
+        //     'Content-Type': 'application/json',
+        //   }})
+        //   .then(async response=>{
+        //     const data = await response.json();
+        //     newsProviders.current = data.response;            
+        //     getNewsProvider();
+        //     })
+        newsProviders.current = data;
+        getNewsProvider();
     },[])
 
     function getNewsProvider(){
