@@ -6,16 +6,11 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { NewsCardProps } from '../Interfaces/newsCard';
 import { News } from 'public/interface/NewsInfo';
+
 
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
@@ -58,6 +53,7 @@ const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
         height="194"
         image={"/imgNews/"+news.image}
         alt="Paella dish"
+        className='lazyload'
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
