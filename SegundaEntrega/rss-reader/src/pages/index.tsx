@@ -42,17 +42,17 @@ export default function Home({data}:any) {
         <Box sx={{ width: '100%' }}>
           <Box sx={{ borderBottom: 1, borderColor: 'divider',width:'90vw' }}>
             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-              <Tab label="Proveedores" {...a11yProps(0)} />
-              <Tab label="Feed" {...a11yProps(1)} />
+              <Tab label="Feed" {...a11yProps(0)} />
+              <Tab label="Proveedores" {...a11yProps(1)} />
             </Tabs>
           </Box>
-          <TabPanel value={value} index={0}>
-            {_proveedores()}
-          </TabPanel>
-          <TabPanel value={value} index={1} >
+          <TabPanel value={value} index={0} >
             <Suspense fallback={<div>Cargando...</div>}>
               {_feed(data)}
             </Suspense>
+          </TabPanel>
+          <TabPanel value={value} index={1}>
+            {_proveedores()}
           </TabPanel>
         </Box>
       </main>
