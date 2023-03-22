@@ -63,7 +63,9 @@ export default function Home({data}:any) {
 //get service side props to get the data from api/newsEP
 export async function getServerSideProps(context:any) {
   let url = '';
-  url = process.env.NODE_ENV === 'development' ? 'http://localhost:4200/' : context.req.headers.host;
+  console.log('URL',context.req.headers.host,'Env',process.env.NODE_ENV);
+  url = process.env.NODE_ENV === 'development' ? 'http://localhost:4200' : 'https://'+context.req.headers.host;
+  
   const res = await fetch(`${url}/api/newsEP`)
   const data = await res.json();
   
