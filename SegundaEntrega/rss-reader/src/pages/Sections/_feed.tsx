@@ -67,7 +67,7 @@ export default function _feed(data?:any){
               }
               return false;
             });
-          });
+        });
     }
 
     const debounceSearch = (event:any) => {
