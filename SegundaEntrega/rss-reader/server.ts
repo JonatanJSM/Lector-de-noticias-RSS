@@ -17,24 +17,47 @@
 // export default (req: NextApiRequest, res: NextApiResponse) => {
 //   proxy(req, res);
 // };
+// import { createProxyMiddleware } from 'http-proxy-middleware';
+// import { NextApiRequest, NextApiResponse } from 'next';
+
+// const proxy1 = createProxyMiddleware({
+//   target: 'https://lector-de-noticias-rss-git-aordonez-jonatanjsm.vercel.app/',
+//   changeOrigin: true,
+// });
+
+// const proxy2 = createProxyMiddleware({
+//   target: 'https://lector-de-noticias-rss-git-fcetina-jonatanjsm.vercel.app/',
+//   changeOrigin: true,
+// });
+
+// let currentProxy = proxy1;
+
+// const chooseProxy = (req: NextApiRequest, res: NextApiResponse, next: () => void) => {
+//   currentProxy = currentProxy === proxy1 ? proxy2 : proxy1;
+//     currentProxy(req, res, next);
+// };
+
+// // export default function (req, res) {
+// //     return apiProxy(req, res);
+// //   };
+// export default chooseProxy;
+
 import { createProxyMiddleware } from 'http-proxy-middleware';
-import { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest, NextApiResponse } from 'next';
+import { IncomingMessage, ServerResponse } from 'http';
 
-const proxy1 = createProxyMiddleware({
-  target: 'https://lector-de-noticias-rss-git-aordonez-jonatanjsm.vercel.app/',
-  changeOrigin: true,
-});
-
-const proxy2 = createProxyMiddleware({
-  target: 'https://lector-de-noticias-rss-git-fcetina-jonatanjsm.vercel.app/',
-  changeOrigin: true,
-});
-
-let currentProxy = proxy1;
-
-const chooseProxy = (req: NextApiRequest, res: NextApiResponse, next: () => void) => {
-  currentProxy = currentProxy === proxy1 ? proxy2 : proxy1;
-   // currentProxy(req, res, next);
+export const config = {
+  api: {
+    bodyParser: false,
+  },
 };
 
-export default chooseProxy;
+const apiProxy = createProxyMiddleware({
+    target: 'http://localhost:3001', // Cambia esta URL por la URL de tu servidor API
+    changeOrigin: true,
+  });
+  
+
+export default function handler(req: NextApiRequest, res: NextApiResponse) {
+  return apiProxy.upgrade;
+}
