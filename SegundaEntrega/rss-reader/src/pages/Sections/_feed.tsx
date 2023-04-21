@@ -17,14 +17,6 @@ export default function _feed(data?:any){
     const [filteredNews, setFilteredNews] = useState<News[]>([]);
 
     useEffect(()=>{
-        // fetch('api/newsEP',{method: 'GET',headers: {
-        //     'Content-Type': 'application/json',
-        //   }})
-        //   .then(async response=>{
-        //     const data = await response.json();
-        //     newsProviders.current = data.response;            
-        //     getNewsProvider();
-        //     })
         newsProviders.current = data;
         getNewsProvider();
     },[])
@@ -67,7 +59,7 @@ export default function _feed(data?:any){
               }
               return false;
             });
-          });
+        });
     }
 
     const debounceSearch = (event:any) => {
