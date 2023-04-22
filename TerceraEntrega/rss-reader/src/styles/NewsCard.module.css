@@ -1,0 +1,74 @@
+.card {
+    width: 100%;
+    max-width: 500px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+  }
+  
+  .cardBody {
+    padding: 20px;
+  }
+  
+  .cardImage {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 20px;
+  }
+  
+  .cardTitle {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .cardDescription {
+    font-size: 16px;
+    font-style: italic;
+    line-height: 1.5;
+    overflow: hidden;
+    max-height: 100px;
+    transition: max-height 0.3s ease-in-out;
+  }
+  
+  .cardDescription.show {
+    max-height: 9999px;
+  }
+  
+  .cardToggleButton {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: color 0.3s ease-in-out;
+  }
+  
+  .cardToggleButton:hover {
+    color: #0056b3;
+  }
+  
+  .cardLinkButton {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .cardLinkButton:hover {
+    background-color: #0056b3;
+  }
+  
+  .cardCategory,
+  .cardDate {
+    font-size: 14px;
+    margin-top: 10px;
+  }
