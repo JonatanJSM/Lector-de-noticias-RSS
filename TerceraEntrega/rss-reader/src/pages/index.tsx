@@ -66,7 +66,7 @@ export async function getServerSideProps(context:any) {
   console.log('URL',context.req.headers.host,'Env',process.env.NODE_ENV);
   url = process.env.NODE_ENV === 'development' ? 'http://localhost:4200' : 'https://'+context.req.headers.host;
   
-  const res = await fetch(`${url}/api/newsEP`)
+  const res = await fetch(`${url}/api/NEWS`)
   const data = await res.json();
   
   return {

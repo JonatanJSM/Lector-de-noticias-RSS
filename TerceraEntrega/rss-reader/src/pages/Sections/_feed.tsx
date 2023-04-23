@@ -26,20 +26,8 @@ export default function _feed(data?:any){
     }
 
     function getListOfNews(arrayOfNews: News[],id:string){   
-        setNews(news=>[...news,...arrayOfNews].sort((a,b)=>{
-            let aDate = new Date(a.pubDate);
-            let bDate = new Date(b.pubDate);
-            if (bDate > aDate) return 1;
-            if (bDate < aDate) return -1;
-            return 0;
-        }));  
-        setFilteredNews(filteredNews=>[...filteredNews,...arrayOfNews].sort((a,b)=>{
-            let aDate = new Date(a.pubDate);
-            let bDate = new Date(b.pubDate);
-            if (bDate > aDate) return 1;
-            if (bDate < aDate) return -1;
-            return 0;
-        }));       
+        setNews(news=>[...news,...arrayOfNews]);  
+        setFilteredNews(filteredNews=>[...filteredNews,...arrayOfNews]);       
     }    
 
     function getSearchInput(event:any){
