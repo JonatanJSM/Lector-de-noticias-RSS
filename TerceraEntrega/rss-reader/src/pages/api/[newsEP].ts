@@ -7,15 +7,30 @@ import { resolve } from 'path';
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     let newss: WebNews[]=[];
+    let urls: WebNews[]=[];
     try {
+        const {newsEP} = req.query;
         //@ts-ignore
         const client = await clientPromise;
         const db = client.db(process.env.MONGO_DB);
         let newsParsed: string[] =[];
-        
+        //console.log(newsEP);
         if(req.method === 'GET'){
-            const newsDb:WebNews[] = await db.collection("news").find({}).toArray();
-            newss = newsDb;            
+            if(newsEP === 'NEWS'){
+                const newsDb:WebNews[] = await db.collection("news").aggregate([
+                    { $unwind: "$newsItems" },
+                    { $sort: { "newsItems.pubDate": -1 } },
+                    { $group: { _id: null, newsItems: { $push: "$newsItems" } } },
+                    { $project: { _id: 0, newsItems: 1 } }
+                  ]).toArray();
+                newss = newsDb;     
+            }  
+            if(newsEP === 'URL'){
+                const newsDb:WebNews[] = await db.collection("news").aggregate([
+                    { $project: { _id: 0, urlWebPage: 1 } }
+                  ]).toArray();
+                newss = newsDb;     
+            }      
         }
 
         if(req.method === 'POST'){

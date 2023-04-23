@@ -21,7 +21,7 @@ export default function _proveedores(){
       };
 
     useEffect(()=>{
-        fetch('api/newsEP',{method: 'GET',headers: {
+        fetch('/api/URL',{method: 'GET',headers: {
             'Content-Type': 'application/json',
           }})
           .then(async response=>{
@@ -54,7 +54,7 @@ export default function _proveedores(){
 
     const onSubmit = (data:any) => {
         setIsLoading(true);
-        fetch('../api/newsEP', {
+        fetch('/api/U', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -91,7 +91,7 @@ export default function _proveedores(){
     }
 
     function eliminar(index:number){
-                    fetch('../api/newsEP', {
+                    fetch('/api/D', {
                     method: 'DELETE',
                     headers: {
                         'Content-Type': 'application/json',
