@@ -43,10 +43,10 @@ async function parserRRSFeed(urlss: string) {
     } catch (error) {
       return "error";
     }
-
+    
     let auxNamePhoto = urlss.replace(/[:/,;<>]/g, '');
     auxNamePhoto += ".png";
-    directoryFiles.includes(auxNamePhoto)?photosNews=auxNamePhoto:"";
+    directoryFiles.includes(auxNamePhoto)?photosNews= "/imgNews/"+auxNamePhoto:"";
 
     let feedTitle = String(feed.title);
     let i = 0;
