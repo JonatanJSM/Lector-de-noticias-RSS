@@ -21,14 +21,35 @@ export default function _proveedores(){
       };
 
     useEffect(()=>{
+
+        if(getCookie("miCookie")!==""){
+            let xxxxx = (getCookie("miCookie"));
+            let aaaa = JSON.parse(xxxxx);
+            console.log("hola");
+            setValue('input',aaaa.response.map((item:WebNews)=>{return {urls:item.urlWebPage}}));
+        }else{
+
         fetch('/api/URL',{method: 'GET',headers: {
             'Content-Type': 'application/json',
           }})
           .then(async response=>{
             const data = await response.json();
             setValue('input',data.response.map((item:WebNews)=>{return {urls:item.urlWebPage}}));
-            })
+            const expires = new Date();
+            expires.setSeconds(expires.getSeconds() + 60); // Expire in 60 seconds
+            document.cookie = "miCookie="+JSON.stringify(data)+"; max-age=60; expires=${expires.toUTCString()}; path=/";
+        })}
+
     },[])
+
+    function getCookie(name: string): string {
+        const cookies = document.cookie.split(';');
+        const cookie = cookies.find(cookie => cookie.trim().startsWith(`${name}=`));
+        if (!cookie) {
+          return "";
+        }
+        return cookie.split('=')[1];
+      }
 
     const {
         register,
