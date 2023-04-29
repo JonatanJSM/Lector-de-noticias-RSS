@@ -21,25 +21,23 @@ export default function _proveedores(){
       };
 
     useEffect(()=>{
-
-        if(getCookie("miCookie")!==""){
-            let xxxxx = (getCookie("miCookie"));
-            let aaaa = JSON.parse(xxxxx);
-            console.log("hola");
-            setValue('input',aaaa.response.map((item:WebNews)=>{return {urls:item.urlWebPage}}));
+        let dataCookie = (getCookie("miCookie"));
+        if(dataCookie !==""){
+            console.log("cookie");
+            let dataCookieJSON = JSON.parse(dataCookie);
+            setValue('input',dataCookieJSON.response.map((item:WebNews)=>{return {urls:item.urlWebPage}}));
         }else{
-
-        fetch('/api/URL',{method: 'GET',headers: {
+            fetch('/api/URL',{method: 'GET',headers: {
             'Content-Type': 'application/json',
-          }})
-          .then(async response=>{
-            const data = await response.json();
-            setValue('input',data.response.map((item:WebNews)=>{return {urls:item.urlWebPage}}));
-            const expires = new Date();
-            expires.setSeconds(expires.getSeconds() + 60); // Expire in 60 seconds
-            document.cookie = "miCookie="+JSON.stringify(data)+"; max-age=60; expires=${expires.toUTCString()}; path=/";
-        })}
-
+            }})
+                .then(async response=>{
+                     const data = await response.json();
+                     setValue('input',data.response.map((item:WebNews)=>{return {urls:item.urlWebPage}}));
+                     const expires = new Date();
+                     expires.setSeconds(expires.getSeconds() + 5);
+                     document.cookie = "miCookie="+JSON.stringify(data)+"; max-age=5; expires=${expires.toUTCString()}; path=/";
+                })
+         }
     },[])
 
     function getCookie(name: string): string {

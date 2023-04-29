@@ -9,6 +9,8 @@ import Box from '@mui/material/Box';
 import TabPanel from '@/abstractComponents/TabPanel';
 import _feed from './Sections/_feed';
 import _proveedores from './Sections/_proveedores';
+// import { parseCookies } from 'nookies';
+// import { setCookie } from 'nookies';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json())
 function a11yProps(index: number) {
@@ -62,15 +64,24 @@ export default function Home({data}:any) {
 
 //get service side props to get the data from api/newsEP
 export async function getServerSideProps(context:any) {
+  //const cookies = parseCookies(context);
+
   let url = '';
   url = process.env.NODE_ENV === 'development' ? 'http://localhost:4200' : 'https://'+context.req.headers.host;
-  
   const res = await fetch(`${url}/api/NEWS`)
   const data = await res.json();
   
+  // let aux = JSON.stringify(data.response);
+  // console.log(aux)
+  // setCookie(context, 'myCookieName', aux, {
+  //   maxAge: 60, // la cookie expirará en 60 segundos
+  //   path: '/',
+  // });
+
   return {
     props: {
-      data: data.response
+      data: data.response,
+      //cookies
     }
   }
 }
