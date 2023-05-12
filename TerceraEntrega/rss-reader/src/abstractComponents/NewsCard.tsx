@@ -17,7 +17,7 @@ const NewsCard:React.FC<ComponentNewsCardProps> = ({news}) => {
   return (
     <div className={styles.card}>
       <div className={styles.cardBody}>
-        <img src={"/imgNews/"+news?.image} alt={news?.title} className={styles.cardImage} />
+        <img src={news?.image} alt={news?.title} className={styles.cardImage} />
         <h2 className={styles.cardTitle}>{news?.title}</h2>
         <div className={styles.cardCategory}>{news?.category}</div>
           <div className={styles.cardDate}>{news?.pubDate.substring(0,10)}</div>

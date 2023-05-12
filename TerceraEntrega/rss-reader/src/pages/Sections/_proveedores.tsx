@@ -21,14 +21,33 @@ export default function _proveedores(){
       };
 
     useEffect(()=>{
-        fetch('/api/URL',{method: 'GET',headers: {
+        let dataCookie = (getCookie("miCookie"));
+        if(dataCookie !==""){
+            console.log("cookie");
+            let dataCookieJSON = JSON.parse(dataCookie);
+            setValue('input',dataCookieJSON.response.map((item:WebNews)=>{return {urls:item.urlWebPage}}));
+        }else{
+            fetch('/api/URL',{method: 'GET',headers: {
             'Content-Type': 'application/json',
-          }})
-          .then(async response=>{
-            const data = await response.json();
-            setValue('input',data.response.map((item:WebNews)=>{return {urls:item.urlWebPage}}));
-            })
+            }})
+                .then(async response=>{
+                     const data = await response.json();
+                     setValue('input',data.response.map((item:WebNews)=>{return {urls:item.urlWebPage}}));
+                     const expires = new Date();
+                     expires.setSeconds(expires.getSeconds() + 5);
+                     document.cookie = "miCookie="+JSON.stringify(data)+"; max-age=5; expires=${expires.toUTCString()}; path=/";
+                })
+         }
     },[])
+
+    function getCookie(name: string): string {
+        const cookies = document.cookie.split(';');
+        const cookie = cookies.find(cookie => cookie.trim().startsWith(`${name}=`));
+        if (!cookie) {
+          return "";
+        }
+        return cookie.split('=')[1];
+      }
 
     const {
         register,

@@ -17,18 +17,11 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         //console.log(newsEP);
         if(req.method === 'GET'){
             if(newsEP === 'NEWS'){
-                const newsDb:WebNews[] = await db.collection("news").aggregate([
-                    { $unwind: "$newsItems" },
-                    { $sort: { "newsItems.pubDate": -1 } },
-                    { $group: { _id: null, newsItems: { $push: "$newsItems" } } },
-                    { $project: { _id: 0, newsItems: 1 } }
-                  ]).toArray();
+                const newsDb:WebNews[] = await db.collection('vista_news').find().toArray();
                 newss = newsDb;     
             }  
             if(newsEP === 'URL'){
-                const newsDb:WebNews[] = await db.collection("news").aggregate([
-                    { $project: { _id: 0, urlWebPage: 1 } }
-                  ]).toArray();
+                const newsDb:WebNews[] = await db.collection('vista_urls').find().toArray();
                 newss = newsDb;     
             }      
         }

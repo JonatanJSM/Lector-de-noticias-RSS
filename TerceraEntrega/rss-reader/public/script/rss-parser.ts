@@ -5,7 +5,7 @@ import {web} from "public/classes/web";
 import * as fs from 'fs';
 import path from 'path';
 
-const photoCat: string = "newsDefault.svg";
+const photoCat: string = "/imgNews/newsDefault.svg";
 let directoryFiles: string[] = [];
 type NYT  = {
   _: number;
@@ -43,10 +43,10 @@ async function parserRRSFeed(urlss: string) {
     } catch (error) {
       return "error";
     }
-
+    
     let auxNamePhoto = urlss.replace(/[:/,;<>]/g, '');
     auxNamePhoto += ".png";
-    directoryFiles.includes(auxNamePhoto)?photosNews=auxNamePhoto:"";
+    directoryFiles.includes(auxNamePhoto)?photosNews= "/imgNews/"+auxNamePhoto:"";
 
     let feedTitle = String(feed.title);
     let i = 0;
@@ -74,7 +74,7 @@ async function parserRRSFeed(urlss: string) {
 
       categories  = Object.assign([], item.categories);
       if(feedTitle.includes('NYT')){
-        photosNews = "NYT.gif";
+        photosNews = "/imgNews/NYT.png";
         if(item.categories === undefined){
           category="News";
         }else{
