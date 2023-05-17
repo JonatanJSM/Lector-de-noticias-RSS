@@ -7,16 +7,23 @@ import { resolve } from 'path';
 
 export default async function handler(req:NextApiRequest, res:NextApiResponse) {
     let newss: WebNews[]=[];
-
+    let urls: WebNews[]=[];
     try {
+        const {newsEP} = req.query;
         //@ts-ignore
         const client = await clientPromise;
         const db = client.db(process.env.MONGO_DB);
         let newsParsed: string[] =[];
-        
+        //console.log(newsEP);
         if(req.method === 'GET'){
-            const newsDb:WebNews[] = await db.collection("news").find({}).toArray();
-            newss[0].newsItems[0].title = newss[0].newsItems[0].title + "!!";         
+            if(newsEP === 'NEWS'){
+                const newsDb:WebNews[] = await db.collection('vista_news').find().toArray();
+                newss = newsDb;     
+            }  
+            if(newsEP === 'URL'){
+                const newsDb:WebNews[] = await db.collection('vista_urls').find().toArray();
+                newss = newsDb;     
+            }      
         }
 
         if(req.method === 'POST'){
