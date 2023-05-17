@@ -16,7 +16,6 @@ export default async function handler(req:NextApiRequest, res:NextApiResponse) {
         
         if(req.method === 'GET'){
             const newsDb:WebNews[] = await db.collection("news").find({}).toArray();
-            newss = newsDb;  
             newss[0].newsItems[0].title = newss[0].newsItems[0].title + "!!";         
         }
 
